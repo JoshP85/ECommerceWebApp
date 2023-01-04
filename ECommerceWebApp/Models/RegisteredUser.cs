@@ -6,8 +6,10 @@ namespace ECommerceWebApp.Models
     {
         public RegisteredUser()
         {
-            _id = new Guid().ToString();
+            Id = Guid.NewGuid().ToString();
+            Type = UserType.Customer;
         }
+
         public enum UserType
         {
             Customer,
@@ -15,24 +17,15 @@ namespace ECommerceWebApp.Models
             Admin
         }
 
-        private string _id;
-        private UserType _type;
-        private string _firstName;
-        private string _lastName;
-        private string _email;
-        private string _password;
-        private string _phone;
-        private string _address;
-
         [Key]
-        public string Id { get { return _id; } set { _id = value; } }
-        public UserType Type { get { return _type; } set { _type = value; } }
-        public string FirstName { get { return _firstName; } set { _firstName = value; } }
-        public string LastName { get { return _lastName; } set { _lastName = value; } }
-        public string Email { get { return _email; } set { _email = value; } }
-        public string Password { get { return _password; } set { _password = value; } }
-        public string Phone { get { return _phone; } set { _phone = value; } }
-        public string Address { get { return _address; } set { _address = value; } }
+        public string Id { get; set; }
+        public UserType Type { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
 
     }
 }

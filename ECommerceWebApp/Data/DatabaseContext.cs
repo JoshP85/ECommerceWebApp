@@ -8,6 +8,7 @@ namespace ECommerceWebApp.Data
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
         {
+            Database.Migrate();
         }
         public virtual DbSet<RegisteredUser> RegisteredUsers { get; set; }
     }
