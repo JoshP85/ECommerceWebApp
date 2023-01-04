@@ -1,6 +1,16 @@
+using ECommerceWebApp.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// json file that has the connection string.
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+       .AddJsonFile("dbconnection.json", optional: true, reloadOnChange: true);
+
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(opt =>
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

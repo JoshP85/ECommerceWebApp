@@ -1,10 +1,12 @@
-﻿namespace ECommerceWebApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerceWebApp.Models
 {
     public class RegisteredUser
     {
         public RegisteredUser()
         {
-            _registeredUserId = new Guid().ToString();
+            _id = new Guid().ToString();
         }
         public enum UserType
         {
@@ -13,8 +15,8 @@
             Admin
         }
 
+        private string _id;
         private UserType _type;
-        private string _registeredUserId;
         private string _firstName;
         private string _lastName;
         private string _email;
@@ -22,8 +24,9 @@
         private string _phone;
         private string _address;
 
+        [Key]
+        public string Id { get { return _id; } set { _id = value; } }
         public UserType Type { get { return _type; } set { _type = value; } }
-        public string RegisteredUserId { get { return _registeredUserId; } }
         public string FirstName { get { return _firstName; } set { _firstName = value; } }
         public string LastName { get { return _lastName; } set { _lastName = value; } }
         public string Email { get { return _email; } set { _email = value; } }
