@@ -1,4 +1,5 @@
 using ECommerceWebApp.Data;
+using ECommerceWebApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 // Add services to the container.
 builder.Services.AddDbContext<DatabaseContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AccountService>();
 
 builder.Services.AddControllersWithViews();
 

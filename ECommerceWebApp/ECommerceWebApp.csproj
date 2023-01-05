@@ -28,4 +28,8 @@
     <None Include="dbconnection.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Auth\" />
+  </ItemGroup>
+
 </Project>
