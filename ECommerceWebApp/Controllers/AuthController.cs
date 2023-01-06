@@ -1,5 +1,4 @@
-﻿using ECommerceWebApp.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceWebApp.Controllers
 {
@@ -8,11 +7,14 @@ namespace ECommerceWebApp.Controllers
 
         private readonly ILogger<HomeController> _logger;
 
-        private readonly AuthService _userService;
-
         public AuthController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+
+        public IActionResult Login()
+        {
+            return View();
         }
 
     }

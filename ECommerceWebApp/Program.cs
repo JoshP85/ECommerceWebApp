@@ -12,8 +12,12 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 builder.Services.AddDbContext<DatabaseContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AccountService>();
+
+builder.Services.AddScoped<IRegisteredUserRepository, RegisteredUserRepository>();
+builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 builder.Services.AddControllersWithViews();
 

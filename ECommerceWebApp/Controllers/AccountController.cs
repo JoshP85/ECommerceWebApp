@@ -6,15 +6,13 @@ namespace ECommerceWebApp.Controllers
 {
     public class AccountController : Controller
     {
-
         private readonly ILogger<HomeController> _logger;
+        private readonly AccountService _accountService;
 
-        private readonly AuthService _userService;
-
-        public AccountController(ILogger<HomeController> logger, AuthService userService)
+        public AccountController(ILogger<HomeController> logger, AccountService accountService)
         {
             _logger = logger;
-            _userService = userService;
+            _accountService = accountService;
         }
 
         public IActionResult Register()
@@ -24,14 +22,14 @@ namespace ECommerceWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisteredUser user)
+        public async Task<IActionResult> Register(UnregisteredUser newAccount)
         {
             if (ModelState.IsValid)
             {
-                await _userService.AddUser(user);
+                await _accountService.Register(newAccount);
                 return RedirectToAction("Index", "Home");
             }
-            return View(user);
+            return View(newAccount);
         }
     }
 }
