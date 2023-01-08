@@ -22,7 +22,7 @@ namespace ECommerceWebApp.Services
                 Password = newAccount.Password,
             };
 
-            _unitOfWork.RegisteredUserRepository.Add(newUserAccount);
+            _unitOfWork.AccountRepository.Add(newUserAccount);
             await _unitOfWork.SaveChangesAsync();
         }
     }

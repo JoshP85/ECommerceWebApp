@@ -4,17 +4,17 @@
     {
         private readonly DatabaseContext _context;
         private readonly IRepository<T> _genericRepository;
-        private readonly IAccountRepository _registeredUserRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public UnitOfWork(DatabaseContext context, IRepository<T> genericRepository, IAccountRepository registeredUserRepository)
+        public UnitOfWork(DatabaseContext context, IRepository<T> genericRepository, IAccountRepository accountRepository)
         {
             _context = context;
             _genericRepository = genericRepository;
-            _registeredUserRepository = registeredUserRepository;
+            _accountRepository = accountRepository;
         }
 
         public IRepository<T> GenericRepository => _genericRepository;
-        public IAccountRepository RegisteredUserRepository => _registeredUserRepository;
+        public IAccountRepository AccountRepository => _accountRepository;
 
         public async Task SaveChangesAsync()
         {

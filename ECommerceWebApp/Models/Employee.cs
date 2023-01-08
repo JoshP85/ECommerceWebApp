@@ -1,6 +1,6 @@
 ﻿namespace ECommerceWebApp.Models
 {
-    public class EmployeeAccount : Account
+    public class Employee : Account
     {
     }
 }
