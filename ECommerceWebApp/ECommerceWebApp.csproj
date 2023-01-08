@@ -28,4 +28,8 @@
     <None Include="dbconnection.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

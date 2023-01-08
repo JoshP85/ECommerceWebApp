@@ -3,18 +3,18 @@
     public class UnitOfWork<T> : IUnitOfWork<T> where T : class
     {
         private readonly DatabaseContext _context;
-        private readonly IGenericRepository<T> _genericRepository;
-        private readonly IRegisteredUserRepository _registeredUserRepository;
+        private readonly IRepository<T> _genericRepository;
+        private readonly IAccountRepository _registeredUserRepository;
 
-        public UnitOfWork(DatabaseContext context, IGenericRepository<T> genericRepository, IRegisteredUserRepository registeredUserRepository)
+        public UnitOfWork(DatabaseContext context, IRepository<T> genericRepository, IAccountRepository registeredUserRepository)
         {
             _context = context;
             _genericRepository = genericRepository;
             _registeredUserRepository = registeredUserRepository;
         }
 
-        public IGenericRepository<T> GenericRepository => _genericRepository;
-        public IRegisteredUserRepository RegisteredUserRepository => _registeredUserRepository;
+        public IRepository<T> GenericRepository => _genericRepository;
+        public IAccountRepository RegisteredUserRepository => _registeredUserRepository;
 
         public async Task SaveChangesAsync()
         {

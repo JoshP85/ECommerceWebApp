@@ -5,16 +5,16 @@ namespace ECommerceWebApp.Services
 {
     public class AccountService
     {
-        private readonly IUnitOfWork<RegisteredUser> _unitOfWork;
+        private readonly IUnitOfWork<Account> _unitOfWork;
 
-        public AccountService(IUnitOfWork<RegisteredUser> unitOfWork)
+        public AccountService(IUnitOfWork<Account> unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Register(UnregisteredUser newAccount)
+        public async Task Register(Account newAccount)
         {
-            var newUserAccount = new RegisteredUser
+            var newUserAccount = new Account
             {
                 FirstName = newAccount.FirstName,
                 LastName = newAccount.LastName,

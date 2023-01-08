@@ -1,6 +1,6 @@
 ﻿namespace ECommerceWebApp.Data
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         Task AddAsync(T entity);
         Task DeleteAsync(T entity);

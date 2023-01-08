@@ -10,6 +10,6 @@ namespace ECommerceWebApp.Data
         {
             Database.Migrate();
         }
-        public virtual DbSet<RegisteredUser> RegisteredUsers { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
     }
 }

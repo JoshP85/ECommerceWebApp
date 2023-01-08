@@ -21,7 +21,7 @@ namespace ECommerceWebApp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ECommerceWebApp.Models.RegisteredUser", b =>
+            modelBuilder.Entity("ECommerceWebApp.Models.Acccount", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -49,7 +49,7 @@ namespace ECommerceWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegisteredUsers");
+                    b.ToTable("Accounts");
                 });
 #pragma warning restore 612, 618
         }

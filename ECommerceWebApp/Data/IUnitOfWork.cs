@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork<T> where T : class
     {
-        IRegisteredUserRepository RegisteredUserRepository { get; }
+        IAccountRepository RegisteredUserRepository { get; }
 
         Task SaveChangesAsync();
     }

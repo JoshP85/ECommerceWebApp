@@ -2,15 +2,15 @@
 
 namespace ECommerceWebApp.Models
 {
-    public class RegisteredUser
+    public class Account
     {
-        public RegisteredUser()
+        public Account()
         {
             Id = Guid.NewGuid().ToString();
-            Type = UserType.Customer;
+            Type = AccountType.Customer;
         }
 
-        public enum UserType
+        public enum AccountType
         {
             Customer,
             Employee,
@@ -19,7 +19,7 @@ namespace ECommerceWebApp.Models
 
         [Key]
         public string Id { get; set; }
-        public UserType Type { get; set; }
+        public AccountType Type { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

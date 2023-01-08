@@ -22,7 +22,7 @@ namespace ECommerceWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(UnregisteredUser newAccount)
+        public async Task<IActionResult> Register(Account newAccount)
         {
             if (ModelState.IsValid)
             {

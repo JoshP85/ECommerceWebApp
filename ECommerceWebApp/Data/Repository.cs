@@ -2,12 +2,12 @@
 
 namespace ECommerceWebApp.Data
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly DatabaseContext _databaseContext;
         private readonly DbSet<T> _dbSet;
 
-        public GenericRepository(DatabaseContext databaseContext)
+        public Repository(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
             _dbSet = _databaseContext.Set<T>();
