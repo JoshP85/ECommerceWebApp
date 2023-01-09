@@ -1,5 +1,5 @@
-﻿using ECommerceWebApp.Models;
-using ECommerceWebApp.Services;
+﻿using ECommerceWebApp.Services;
+using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceWebApp.Controllers
@@ -8,11 +8,13 @@ namespace ECommerceWebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AccountService _accountService;
+        private readonly AuthService _authService;
 
-        public AccountController(ILogger<HomeController> logger, AccountService accountService)
+        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService)
         {
             _logger = logger;
             _accountService = accountService;
+            _authService = authService;
         }
 
         public IActionResult Register()
@@ -22,11 +24,12 @@ namespace ECommerceWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Account newAccount)
+        public async Task<IActionResult> Register(RegisterViewModel newAccount)
         {
             if (ModelState.IsValid)
             {
-                await _accountService.Register(newAccount);
+                string id = await _accountService.Register(newAccount);
+                await _authService.AddNewAuth(id, newAccount.Password);
                 return RedirectToAction("Index", "Home");
             }
             return View(newAccount);

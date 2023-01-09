@@ -11,5 +11,6 @@ namespace ECommerceWebApp.Data
             Database.Migrate();
         }
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Auth> AuthItems { get; set; }
     }
 }

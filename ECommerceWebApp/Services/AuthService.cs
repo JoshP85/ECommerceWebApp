@@ -1,19 +1,32 @@
 ﻿using ECommerceWebApp.Data;
+using ECommerceWebApp.Models;
 
 namespace ECommerceWebApp.Services
 {
     public class AuthService
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly IUnitOfWork<Auth> _unitOfWork;
 
-        public AuthService(DatabaseContext databaseContext)
+        public AuthService(IUnitOfWork<Auth> unitOfWork)
         {
-            _databaseContext = databaseContext;
+            _unitOfWork = unitOfWork;
         }
 
-        private async Task SaveChangesAsync()
+        public async Task AddNewAuth(string id, string password)
         {
-            await _databaseContext.SaveChangesAsync();
+            var auth = new Auth
+            {
+                Id = id,
+                Password = password
+            };
+
+            await _unitOfWork.AuthRepository.AddAsync(auth);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public Task AuthenticateLogin(string email, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

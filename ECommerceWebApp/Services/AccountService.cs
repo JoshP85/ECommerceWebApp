@@ -1,5 +1,6 @@
 ﻿using ECommerceWebApp.Data;
 using ECommerceWebApp.Models;
+using ECommerceWebApp.ViewModels;
 
 namespace ECommerceWebApp.Services
 {
@@ -12,18 +13,17 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Register(Account newAccount)
+        public async Task<string> Register(RegisterViewModel newAccount)
         {
             var newUserAccount = new Account
             {
                 FirstName = newAccount.FirstName,
                 LastName = newAccount.LastName,
                 Email = newAccount.Email,
-                Password = newAccount.Password,
             };
 
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
-            await _unitOfWork.SaveChangesAsync();
+            return newUserAccount.Id;
         }
     }
 }
