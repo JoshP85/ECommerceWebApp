@@ -9,15 +9,5 @@ namespace ECommerceWebApp.Data
         {
             _databaseContext = databaseContext;
         }
-
-        public Account GetAccountByEmail(Account account)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Account GetPasswordByEmail()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

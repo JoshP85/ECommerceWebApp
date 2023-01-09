@@ -1,15 +1,20 @@
 ﻿using ECommerceWebApp.Data;
 using ECommerceWebApp.Models;
+using ECommerceWebApp.ViewModels;
 
 namespace ECommerceWebApp.Services
 {
     public class AuthService
     {
         private readonly IUnitOfWork<Auth> _unitOfWork;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IAuthRepository _authRepository;
 
-        public AuthService(IUnitOfWork<Auth> unitOfWork)
+        public AuthService(IUnitOfWork<Auth> unitOfWork, IAccountRepository accountRepository, IAuthRepository authRepository)
         {
             _unitOfWork = unitOfWork;
+            _accountRepository = accountRepository;
+            _authRepository = authRepository;
         }
 
         public async Task AddNewAuth(string id, string password)
@@ -24,9 +29,19 @@ namespace ECommerceWebApp.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task AuthenticateLogin(string email, string password)
+        public async Task<bool> AuthenticateLogin(LoginViewModel newLogin)
         {
-            throw new NotImplementedException();
+            Account account = _accountRepository.GetAccountByEmail(newLogin.Email);
+            if (account == null) return false;
+
+            Auth auth = await _authRepository.GetByIdAsync(account.Id);
+            if (auth == null) return false;
+
+            if (auth.Password == newLogin.Password)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

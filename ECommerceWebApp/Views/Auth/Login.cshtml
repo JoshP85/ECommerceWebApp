@@ -1,4 +1,4 @@
-﻿@model ECommerceWebApp.Models.Account
+﻿@model ECommerceWebApp.ViewModels.LoginViewModel
 @{
     ViewData["Title"] = "Login";
 }
@@ -14,11 +14,11 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-@*            <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
                 <input type="submit" value="Register" class="btn btn-primary" />

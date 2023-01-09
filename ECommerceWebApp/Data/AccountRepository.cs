@@ -40,5 +40,9 @@ namespace ECommerceWebApp.Data
                 {
                     return _databaseContext.Accounts.ToList();
                 }*/
+        public Account GetAccountByEmail(string email)
+        {
+            return _databaseContext.Accounts.FirstOrDefault(_account => _account.Email == email);
+        }
     }
 }
