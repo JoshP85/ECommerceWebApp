@@ -2,12 +2,8 @@
 
 namespace ECommerceWebApp.Data
 {
-    public interface IAccountRepository
+    public interface IAccountRepository : IRepository<Account>
     {
-        void Add(Account user);
-        void Delete(Account user);
-        Account Get(int id);
-        IEnumerable<Account> GetAll();
-        void Update(Account user);
+
     }
 }

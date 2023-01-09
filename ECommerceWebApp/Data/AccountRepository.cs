@@ -2,38 +2,14 @@
 
 namespace ECommerceWebApp.Data
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : Repository<Account>, IAccountRepository
     {
-        private readonly DatabaseContext _context;
+        private readonly DatabaseContext _databaseContext;
 
-        public AccountRepository(DatabaseContext context)
+        public AccountRepository(DatabaseContext databaseContext) : base(databaseContext)
         {
-            _context = context;
+            _databaseContext = databaseContext;
         }
 
-        public void Add(Account user)
-        {
-            _context.Accounts.Add(user);
-        }
-
-        public void Update(Account user)
-        {
-            _context.Accounts.Update(user);
-        }
-
-        public void Delete(Account user)
-        {
-            _context.Accounts.Remove(user);
-        }
-
-        public Account Get(int id)
-        {
-            return _context.Accounts.Find(id);
-        }
-
-        public IEnumerable<Account> GetAll()
-        {
-            return _context.Accounts.ToList();
-        }
     }
 }
