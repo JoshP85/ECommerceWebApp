@@ -1,4 +1,5 @@
 ﻿using ECommerceWebApp.Data;
+using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -30,12 +31,31 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Account account = await _accountRepository.GetAccountByEmail(newLogin.Email);
-
                 var result = await _authService.AuthenticateLogin(newLogin);
+
+                if (result is Account)
+                {
+                    HttpContext.Session.SetString(nameof(Account.Id), result.Id);
+                    HttpContext.Session.SetString(nameof(Account.FirstName), result.FirstName);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.Clear();
+
+                    ModelState.AddModelError("LoginError", "Incorrect email or password.");
+
+                    return View();
+                }
             }
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
