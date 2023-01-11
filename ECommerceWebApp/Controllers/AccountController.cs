@@ -28,10 +28,19 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                string id = await _accountService.Register(newAccount);
-                await _authService.AddNewAuth(id, newAccount.Password);
-                return RedirectToAction("Index", "Home");
+                if (_accountService.IsEmailInUse(newAccount.Email))
+                {
+                    ModelState.AddModelError("EmailError", $"The email \"{newAccount.Email}\" already in use.");
+                    return View(newAccount);
+                }
+                else
+                {
+                    string id = await _accountService.Register(newAccount);
+                    await _authService.AddNewAuth(id, newAccount.Password);
+                    return RedirectToAction("Index", "Home");
+                }
             }
+
             return View(newAccount);
         }
     }

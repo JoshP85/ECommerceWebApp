@@ -25,6 +25,11 @@ namespace ECommerceWebApp.Services
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
             return newUserAccount.Id;
         }
+
+        public bool IsEmailInUse(string email)
+        {
+            return _unitOfWork.AccountRepository.IsEmailInUse(email);
+        }
     }
 }
 

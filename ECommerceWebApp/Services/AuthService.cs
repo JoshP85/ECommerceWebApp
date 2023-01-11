@@ -8,13 +8,11 @@ namespace ECommerceWebApp.Services
     {
         private readonly IUnitOfWork<Auth> _unitOfWork;
         private readonly IAccountRepository _accountRepository;
-        private readonly IAuthRepository _authRepository;
 
-        public AuthService(IUnitOfWork<Auth> unitOfWork, IAccountRepository accountRepository, IAuthRepository authRepository)
+        public AuthService(IUnitOfWork<Auth> unitOfWork, IAccountRepository accountRepository)
         {
             _unitOfWork = unitOfWork;
             _accountRepository = accountRepository;
-            _authRepository = authRepository;
         }
 
         public async Task AddNewAuth(string id, string password)
@@ -50,7 +48,7 @@ namespace ECommerceWebApp.Services
 
         public async Task<Auth> GetAuthByIdAsync(string id)
         {
-            return await _authRepository.GetByIdAsync(id);
+            return await _unitOfWork.AuthRepository.GetByIdAsync(id);
         }
 
         public bool IsPasswordValid(Auth accountAuth, string inputtedPassword)

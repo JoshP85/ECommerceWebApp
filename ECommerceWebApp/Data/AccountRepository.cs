@@ -44,5 +44,10 @@ namespace ECommerceWebApp.Data
         {
             return _databaseContext.Accounts.FirstOrDefault(_account => _account.Email == email);
         }
+
+        public bool IsEmailInUse(string email)
+        {
+            return _databaseContext.Accounts.Any(_account => _account.Email == email);
+        }
     }
 }
