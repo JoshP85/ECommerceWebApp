@@ -44,7 +44,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
                             </li>                            
                             <li class="nav-item">
-                                <p class="nav-link text-dark">@Context.Session.GetString(nameof(Account.FirstName))</p>
+                                <a class="nav-link text-dark">@Context.Session.GetString(nameof(Account.FirstName))</a>
                             </li>
                         }
                         else

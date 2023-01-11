@@ -29,24 +29,24 @@ namespace ECommerceWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Email, Password")] LoginViewModel newLogin)
         {
-            if (ModelState.IsValid)
+            if (newLogin != null)
             {
-                var result = await _authService.AuthenticateLogin(newLogin);
-
-                if (result is Account)
+                if (ModelState.IsValid)
                 {
-                    HttpContext.Session.SetString(nameof(Account.Id), result.Id);
-                    HttpContext.Session.SetString(nameof(Account.FirstName), result.FirstName);
+                    Account account = await _authService.AttemptLogin(newLogin);
 
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.Clear();
+                    if (account != null)
+                    {
+                        HttpContext.Session.SetString(nameof(Account.Id), account.Id);
+                        HttpContext.Session.SetString(nameof(Account.FirstName), account.FirstName);
 
-                    ModelState.AddModelError("LoginError", "Incorrect email or password.");
-
-                    return View();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        ModelState.AddModelError("LoginError", "Incorrect email or password.");
+                    }
                 }
             }
             return View();

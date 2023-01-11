@@ -29,26 +29,33 @@ namespace ECommerceWebApp.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<Account> AuthenticateLogin(LoginViewModel newLogin)
+        public async Task<Account> AttemptLogin(LoginViewModel newLogin)
         {
-            Account account = _accountRepository.GetAccountByEmail(newLogin.Email);
-            if (account is null)
-            {
-                return null;
-            }
+            Account account = GetAccountByEmail(newLogin.Email);
 
-            Auth auth = await _authRepository.GetByIdAsync(account.Id);
-            if (auth is null)
+            if (account != null)
             {
-                return null;
-            }
+                Auth accountAuth = await GetAuthByIdAsync(account.Id);
 
-            if (auth.Password.Equals(newLogin.Password) /*== newLogin.Password*/)
-            {
-                return account;
+                if (accountAuth != null && IsPasswordValid(accountAuth, newLogin.Password))
+                    return account;
             }
-
             return null;
+        }
+
+        public Account GetAccountByEmail(string email)
+        {
+            return _accountRepository.GetAccountByEmail(email);
+        }
+
+        public async Task<Auth> GetAuthByIdAsync(string id)
+        {
+            return await _authRepository.GetByIdAsync(id);
+        }
+
+        public bool IsPasswordValid(Auth accountAuth, string inputtedPassword)
+        {
+            return accountAuth.Password.Equals(inputtedPassword);
         }
     }
 }
