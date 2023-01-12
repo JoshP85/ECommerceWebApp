@@ -30,7 +30,7 @@ namespace ECommerceWebApp.Controllers
             {
                 if (_accountService.IsEmailInUse(newAccount.Email))
                 {
-                    ModelState.AddModelError("EmailError", $"The email \"{newAccount.Email}\" already in use.");
+                    ModelState.AddModelError("EmailError", $"The email \"{newAccount.Email}\" is already in use.");
                     return View(newAccount);
                 }
                 else

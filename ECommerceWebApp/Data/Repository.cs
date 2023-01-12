@@ -4,13 +4,13 @@ namespace ECommerceWebApp.Data
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly DatabaseContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(DatabaseContext databaseContext)
+        public Repository(DatabaseContext context)
         {
-            _databaseContext = databaseContext;
-            _dbSet = _databaseContext.Set<T>();
+            _context = context;
+            _dbSet = _context.Set<T>();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -26,19 +26,16 @@ namespace ECommerceWebApp.Data
         public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(T entity)
+        public void Update(T entity)
         {
             _dbSet.Update(entity);
-            await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            await _databaseContext.SaveChangesAsync();
         }
     }
 }

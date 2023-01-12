@@ -4,11 +4,11 @@ namespace ECommerceWebApp.Data
 {
     public class AccountRepository : Repository<Account>, IAccountRepository
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly DatabaseContext _context;
 
-        public AccountRepository(DatabaseContext databaseContext) : base(databaseContext)
+        public AccountRepository(DatabaseContext context) : base(context)
         {
-            _databaseContext = databaseContext;
+            _context = context;
         }
 
         /*public AccountRepository(DatabaseContext context)
@@ -42,12 +42,12 @@ namespace ECommerceWebApp.Data
                 }*/
         public Account GetAccountByEmail(string email)
         {
-            return _databaseContext.Accounts.FirstOrDefault(_account => _account.Email == email);
+            return _context.Accounts.FirstOrDefault(_account => _account.Email == email);
         }
 
         public bool IsEmailInUse(string email)
         {
-            return _databaseContext.Accounts.Any(_account => _account.Email == email);
+            return _context.Accounts.Any(_account => _account.Email == email);
         }
     }
 }
