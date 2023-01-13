@@ -35,8 +35,8 @@ namespace ECommerceWebApp.Controllers
                 }
                 else
                 {
-                    string id = await _accountService.Register(newAccount);
-                    await _authService.AddNewAuth(id, newAccount.Password);
+                    string newAccountId = await _accountService.Register(newAccount);
+                    await _authService.AddNewAuth(newAccountId, newAccount.Password);
                     return RedirectToAction("Index", "Home");
                 }
             }

@@ -7,12 +7,10 @@ namespace ECommerceWebApp.Services
     public class AuthService
     {
         private readonly IUnitOfWork<Auth> _unitOfWork;
-        private readonly IAccountRepository _accountRepository;
 
-        public AuthService(IUnitOfWork<Auth> unitOfWork, IAccountRepository accountRepository)
+        public AuthService(IUnitOfWork<Auth> unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _accountRepository = accountRepository;
         }
 
         public async Task AddNewAuth(string id, string password)
@@ -43,7 +41,7 @@ namespace ECommerceWebApp.Services
 
         public Account GetAccountByEmail(string email)
         {
-            return _accountRepository.GetAccountByEmail(email);
+            return _unitOfWork.AccountRepository.GetAccountByEmail(email);
         }
 
         public async Task<Auth> GetAuthByIdAsync(string id)

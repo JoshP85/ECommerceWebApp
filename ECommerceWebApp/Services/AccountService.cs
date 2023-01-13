@@ -30,11 +30,6 @@ namespace ECommerceWebApp.Services
         {
             return _unitOfWork.AccountRepository.IsEmailInUse(email);
         }
-
-        /*        public Account GetAccountByEmail(string email)
-                {
-                    return _unitOfWork.AccountRepository.GetAccountByEmail(email);
-                }*/
     }
 }
 
