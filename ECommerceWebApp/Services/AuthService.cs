@@ -27,25 +27,16 @@ namespace ECommerceWebApp.Services
 
         public async Task<Account> AttemptLoginAsync(LoginViewModel newLogin)
         {
-            var password = _unitOfWork.AuthRepository.GetPassword(newLogin.Email);
-            if (password != null)
+            var retrievedPassword = _unitOfWork.AuthRepository.GetPassword(newLogin.Email);
+
+            if (retrievedPassword != null)
             {
-                if (password.Equals(newLogin.Password))
+                if (retrievedPassword.Equals(newLogin.Password))
                 {
                     return await GetAccountByEmailAync(newLogin.Email);
                 }
             }
 
-
-            /*            Account account = await GetAccountByEmailAync(newLogin.Email);
-
-                        if (account != null)
-                        {
-                            Auth accountAuth = await GetAuthByIdAsync(account.Id);
-
-                            if (accountAuth != null && IsPasswordValid(accountAuth, newLogin.Password))
-                                return account;
-                        }*/
             return null;
         }
 
@@ -53,15 +44,5 @@ namespace ECommerceWebApp.Services
         {
             return await _unitOfWork.AccountRepository.GetAccountByEmailAync(email);
         }
-
-        /*        public async Task<Auth> GetAuthByIdAsync(string id)
-                {
-                    return await _unitOfWork.AuthRepository.GetByIdAsync(id);
-                }*/
-
-        /*        public bool IsPasswordValid(string accountAuth, string inputtedPassword)
-                {
-                    return accountAuth.Equals(inputtedPassword);
-                }*/
     }
 }
