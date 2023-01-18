@@ -22,11 +22,11 @@ namespace ECommerceWebApp.Services
                 Email = newAccount.Email,
             };
 
+            // This makes sure the new account has a unique Id.
             while (await _unitOfWork.AccountRepository.IsIdInUseAsync(newUserAccount.Id))
             {
                 newUserAccount.Id = Guid.NewGuid().ToString();
             }
-
 
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
             return newUserAccount.Id;
