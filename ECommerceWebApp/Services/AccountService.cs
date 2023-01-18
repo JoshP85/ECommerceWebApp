@@ -22,13 +22,19 @@ namespace ECommerceWebApp.Services
                 Email = newAccount.Email,
             };
 
+            while (await _unitOfWork.AccountRepository.IsIdInUseAsync(newUserAccount.Id))
+            {
+                newUserAccount.Id = Guid.NewGuid().ToString();
+            }
+
+
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
             return newUserAccount.Id;
         }
 
-        public bool IsEmailInUse(string email)
+        public async Task<bool> IsEmailInUseAsync(string email)
         {
-            return _unitOfWork.AccountRepository.IsEmailInUse(email);
+            return await _unitOfWork.AccountRepository.IsEmailInUseAsync(email);
         }
     }
 }

@@ -46,9 +46,14 @@ namespace ECommerceWebApp.Data
             return await _context.Accounts.FirstOrDefaultAsync(_account => _account.Email == email);
         }
 
-        public bool IsEmailInUse(string email)
+        public async Task<bool> IsEmailInUseAsync(string email)
         {
-            return _context.Accounts.Any(_account => _account.Email == email);
+            return await _context.Accounts.AnyAsync(_account => _account.Email == email);
+        }
+
+        public async Task<bool> IsIdInUseAsync(string id)
+        {
+            return await _context.Accounts.AnyAsync(_account => _account.Id == id);
         }
     }
 }

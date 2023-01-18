@@ -28,7 +28,7 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_accountService.IsEmailInUse(newAccount.Email))
+                if (await _accountService.IsEmailInUseAsync(newAccount.Email))
                 {
                     ModelState.AddModelError("EmailError", $"The email \"{newAccount.Email}\" is already in use.");
                     return View(newAccount);

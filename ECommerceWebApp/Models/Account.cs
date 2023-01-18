@@ -6,7 +6,7 @@ namespace ECommerceWebApp.Models
     {
         public Account()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = "test";//Guid.NewGuid().ToString();
             Type = AccountType.Customer;
         }
 
