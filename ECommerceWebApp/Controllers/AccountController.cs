@@ -28,11 +28,19 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // If password and confirm password fields do not match return model error.
+                if (!_accountService.IsPasswordConfirmed(newAccount))
+                {
+                    ModelState.AddModelError("PasswordError", $"Confirm password and password must match.");
+                    return View(newAccount);
+                }
+
                 if (await _accountService.IsEmailInUseAsync(newAccount.Email))
                 {
                     ModelState.AddModelError("EmailError", $"The email \"{newAccount.Email}\" is already in use.");
                     return View(newAccount);
                 }
+
                 else
                 {
                     string newAccountId = await _accountService.CreateAccount(newAccount);

@@ -23,5 +23,10 @@ namespace ECommerceWebApp.ViewModels
         [Column(TypeName = "text")]
         [MinLengthAttribute(8, ErrorMessage = "Password requires a minimum of 8 characters.")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "A valid password is required.")]
+        [Column(TypeName = "text")]
+        [MinLengthAttribute(8, ErrorMessage = "Password requires a minimum of 8 characters.")]
+        public string ConfirmPassword { get; set; }
     }
 }

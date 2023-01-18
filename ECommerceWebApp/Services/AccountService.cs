@@ -22,7 +22,7 @@ namespace ECommerceWebApp.Services
                 Email = newAccount.Email,
             };
 
-            // This makes sure the new account has a unique Id.
+            // Make sure the new account has a unique Id, if not asign new Id.
             while (await _unitOfWork.AccountRepository.IsIdInUseAsync(newUserAccount.Id))
             {
                 newUserAccount.Id = Guid.NewGuid().ToString();
@@ -31,6 +31,13 @@ namespace ECommerceWebApp.Services
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
             return newUserAccount.Id;
         }
+
+        // Checks if password and confirm password fields match
+        public bool IsPasswordConfirmed(RegisterViewModel newAccount)
+        {
+            return newAccount.Password == newAccount.ConfirmPassword;
+        }
+
 
         public async Task<bool> IsEmailInUseAsync(string email)
         {
