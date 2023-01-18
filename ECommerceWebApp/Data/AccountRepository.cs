@@ -1,4 +1,5 @@
 ﻿using ECommerceWebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceWebApp.Data
 {
@@ -40,9 +41,9 @@ namespace ECommerceWebApp.Data
                 {
                     return _databaseContext.Accounts.ToList();
                 }*/
-        public Account GetAccountByEmail(string email)
+        public async Task<Account> GetAccountByEmailAync(string email)
         {
-            return _context.Accounts.FirstOrDefault(_account => _account.Email == email);
+            return await _context.Accounts.FirstOrDefaultAsync(_account => _account.Email == email);
         }
 
         public bool IsEmailInUse(string email)

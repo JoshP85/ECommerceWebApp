@@ -13,7 +13,7 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddNewAuth(string id, string password)
+        public async Task CreateAuth(string id, string password)
         {
             var auth = new Auth
             {
@@ -25,33 +25,43 @@ namespace ECommerceWebApp.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<Account> AttemptLogin(LoginViewModel newLogin)
+        public async Task<Account> AttemptLoginAsync(LoginViewModel newLogin)
         {
-            Account account = GetAccountByEmail(newLogin.Email);
-
-            if (account != null)
+            var password = _unitOfWork.AuthRepository.GetPassword(newLogin.Email);
+            if (password != null)
             {
-                Auth accountAuth = await GetAuthByIdAsync(account.Id);
-
-                if (accountAuth != null && IsPasswordValid(accountAuth, newLogin.Password))
-                    return account;
+                if (password.Equals(newLogin.Password))
+                {
+                    return await GetAccountByEmailAync(newLogin.Email);
+                }
             }
+
+
+            /*            Account account = await GetAccountByEmailAync(newLogin.Email);
+
+                        if (account != null)
+                        {
+                            Auth accountAuth = await GetAuthByIdAsync(account.Id);
+
+                            if (accountAuth != null && IsPasswordValid(accountAuth, newLogin.Password))
+                                return account;
+                        }*/
             return null;
         }
 
-        public Account GetAccountByEmail(string email)
+        public async Task<Account> GetAccountByEmailAync(string email)
         {
-            return _unitOfWork.AccountRepository.GetAccountByEmail(email);
+            return await _unitOfWork.AccountRepository.GetAccountByEmailAync(email);
         }
 
-        public async Task<Auth> GetAuthByIdAsync(string id)
-        {
-            return await _unitOfWork.AuthRepository.GetByIdAsync(id);
-        }
+        /*        public async Task<Auth> GetAuthByIdAsync(string id)
+                {
+                    return await _unitOfWork.AuthRepository.GetByIdAsync(id);
+                }*/
 
-        public bool IsPasswordValid(Auth accountAuth, string inputtedPassword)
-        {
-            return accountAuth.Password.Equals(inputtedPassword);
-        }
+        /*        public bool IsPasswordValid(string accountAuth, string inputtedPassword)
+                {
+                    return accountAuth.Equals(inputtedPassword);
+                }*/
     }
 }

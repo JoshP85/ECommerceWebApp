@@ -33,7 +33,7 @@ namespace ECommerceWebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Account account = await _authService.AttemptLogin(newLogin);
+                    Account account = await _authService.AttemptLoginAsync(newLogin);
 
                     if (account != null)
                     {

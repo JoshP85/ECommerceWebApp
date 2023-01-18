@@ -13,7 +13,7 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Register(RegisterViewModel newAccount)
+        public async Task<string> CreateAccount(RegisterViewModel newAccount)
         {
             var newUserAccount = new Account
             {
