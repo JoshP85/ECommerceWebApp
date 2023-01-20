@@ -1,6 +1,6 @@
 ﻿using ECommerceWebApp.Models;
 
-namespace ECommerceWebApp.Data
+namespace ECommerceWebApp.Data.Interfaces
 {
     public interface IAuthRepository : IRepository<Auth>
     {

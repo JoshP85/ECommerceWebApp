@@ -1,4 +1,5 @@
 using ECommerceWebApp.Data;
+using ECommerceWebApp.Data.Interfaces;
 using ECommerceWebApp.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,17 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProductCategoryService>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+
 builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 builder.Services.AddControllersWithViews();
