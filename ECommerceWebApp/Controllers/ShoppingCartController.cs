@@ -6,7 +6,13 @@ namespace ECommerceWebApp.Controllers
     {
         public IActionResult ShoppingCart()
         {
+
             return View();
+        }
+
+        public IActionResult AddToCart()
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }
