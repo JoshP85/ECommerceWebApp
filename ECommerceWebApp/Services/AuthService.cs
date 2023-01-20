@@ -1,4 +1,4 @@
-﻿using ECommerceWebApp.Data;
+﻿using ECommerceWebApp.Data.Interfaces;
 using ECommerceWebApp.Models;
 using ECommerceWebApp.ViewModels;
 

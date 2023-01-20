@@ -1,8 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<ProductCategory>
+
+@{
+    ViewData["Title"] = "View";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>GameShop</h1>
+
+<div>
+    <hr />
+    <table>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <th>@category.Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+            @foreach (var product in category.Products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td><a asp-action="Edit" asp-route-id="@category?.Id">Add to Cart</a></td>
+                </tr>
+            }
+        }
+    </table>
 </div>

@@ -1,0 +1,106 @@
+{
+  "ProductCategories": [
+    {
+      "Id": 1,
+      "Name": "PS5 Games",
+      "Description": "Games for the PS5 console."
+    },
+    {
+      "Id": 2,
+      "Name": "Xbox Games",
+      "Description": "Games for the Xbox console."
+    }
+  ],
+  "Products": [
+    {
+      "Id": "fbbf313f-15d9-47f4-aba9-893c2182d2cf",
+      "Name": "Call of Duty: Modern Warfare II",
+      "Description": "FPS",
+      "Price": 59.99,
+      "ProductCategoryId": 1,
+      "Quantity": 59,
+      "Image": null
+    },
+    {
+      "Id": "82eb7dd1-86c2-4239-9bda-3a8464df23dc",
+      "Name": "God of War: Ragnarök",
+      "Description": "Action, Adventure",
+      "Price": 79.99,
+      "ProductCategoryId": 1,
+      "Quantity": 45,
+      "Image": null
+    },
+    {
+      "Id": "56f16d61-00e2-4552-b19b-3ad6a620b694",
+      "Name": "The Last of Us Part I",
+      "Description": "Action",
+      "Price": 79.99,
+      "ProductCategoryId": 1,
+      "Quantity": 77,
+      "Image": null
+    },
+    {
+      "Id": "fa72c4a0-170b-4fbc-8109-a6cd2f3fe34f",
+      "Name": "Marvel's Spider-Man: Miles Morales",
+      "Description": "Action",
+      "Price": 79.99,
+      "ProductCategoryId": 1,
+      "Quantity": 54,
+      "Image": null
+    },
+    {
+      "Id": "00f4afe6-c975-4900-b821-c2fbba1c4f3e",
+      "Name": "Gran Turismo 7",
+      "Description": "Racing",
+      "Price": 59.99,
+      "ProductCategoryId": 1,
+      "Quantity": 87,
+      "Image": null
+    },
+    {
+      "Id": "73836e19-7d27-4f0e-aa45-cc7adca6e07f",
+      "Name": "Call of Duty: Modern Warfare II",
+      "Description": "FPS",
+      "Price": 79.99,
+      "ProductCategoryId": 2,
+      "Quantity": 100,
+      "Image": null
+    },
+    {
+      "Id": "cc8d7fc0-2d73-4b90-9703-31ad0e3bca26",
+      "Name": "Sonic Frontiers",
+      "Description": "Action",
+      "Price": 59.99,
+      "ProductCategoryId": 2,
+      "Quantity": 95,
+      "Image": null
+    },
+    {
+      "Id": "8e7cda30-7b78-4550-9de2-0765d0c44b35",
+      "Name": "Assassins Creed: Valhalla",
+      "Description": "Action RPG",
+      "Price": 39.99,
+      "ProductCategoryId": 2,
+      "Quantity": 17,
+      "Image": null
+    },
+    {
+      "Id": "f2701814-5f6c-41d2-93b1-9aa0e16529e4",
+      "Name": "FarCry 6",
+      "Description": "Action",
+      "Price": 59.99,
+      "ProductCategoryId": 2,
+      "Quantity": 94,
+      "Image": null
+    },
+    {
+      "Id": "57636b85-c090-4d32-98a5-f94a6b8cc3b4",
+      "Name": "Evil West",
+      "Description": "Action",
+      "Price": 39.99,
+      "ProductCategoryId": 2,
+      "Quantity": 36,
+      "Image": null
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿namespace ECommerceWebApp.Data
+﻿namespace ECommerceWebApp.Data.Interfaces
 {
     public interface IRepository<T> where T : class
     {
