@@ -20,7 +20,7 @@ namespace ECommerceWebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_productCategoryService.GetAllProducts());
+            return View(_productCategoryService.GetAllCategoriesWithProducts());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

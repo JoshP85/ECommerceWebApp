@@ -12,6 +12,6 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<ProductCategory> GetAllProducts() => _unitOfWork.ProductCategoryRepository.GetAllProducts();
+        public IEnumerable<ProductCategory> GetAllCategoriesWithProducts() => _unitOfWork.ProductCategoryRepository.GetAllCategoriesWithProducts();
     }
 }

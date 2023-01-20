@@ -18,10 +18,17 @@ namespace ECommerceWebApp.Data
                 .HasOne(p => p.ProductCategory)
                 .WithMany(pc => pc.Products)
                 .HasForeignKey(p => p.ProductCategoryId);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasMany(s => s.CartItems)
+                .WithOne(i => i.ShoppingCart)
+                .HasForeignKey(i => i.ShoppingCartId);
         }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Auth> AuthItems { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public virtual DbSet<ShoppingItem> ShoppingItems { get; set; }
     }
 }
