@@ -1,9 +1,12 @@
-﻿namespace ECommerceWebApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerceWebApp.Models
 {
     public class ShoppingCart
     {
-        public string Id { get; set; }
-        public ICollection<ShoppingItem> CartItems { get; set; }
+        [Key]
+        public string CartId { get; set; }
+        public virtual ICollection<ShoppingItem> CartItems { get; set; } /*= new List<ShoppingItem>();*/
         public decimal TotalPrice { get; set; }
         public Account Account { get; set; }
         public string AccountId { get; set; }

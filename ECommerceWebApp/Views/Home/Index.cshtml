@@ -22,7 +22,7 @@
                     <td>@product.Name</td>
                     <td>@product.Description</td>
                     <td>@product.Price</td>
-                    <td><a asp-action="Edit" asp-route-id="@category?.Id">Add to Cart</a></td>
+                    <td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { id = product.Id, price = product.Price}, null)</td>
                 </tr>
             }
         }

@@ -1,28 +1,32 @@
-﻿@model ECommerceWebApp.Models.ShoppingCart
+﻿@model IEnumerable<ShoppingCart>
 
 @{
     ViewData["Title"] = "View";
 }
 
+@foreach(var m in Model)
+{
+    <p>CartID: @m.CartId</p>
+}
 <div>
-    <h4>ShoppingCart</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Account.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <table>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <th>productId</th>
+                <th>Total Price</th>
+                <th>Quantity</th>
+            </tr>
+            @foreach (var product in m.CartItems)
+            {
+                <tr>
+                    <td>@product.ProductId</td>
+                    <td>@product.TotalPrice</td>
+                    <td>@product.Quantity</td>
+                    @*<td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { id = product.Id, price = product.Price}, null)</td>*@
+                </tr>
+            }
+        }
+    </table>
 </div>

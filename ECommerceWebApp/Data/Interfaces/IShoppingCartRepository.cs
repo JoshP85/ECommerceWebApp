@@ -2,7 +2,8 @@
 
 namespace ECommerceWebApp.Data.Interfaces
 {
-    internal interface IShoppingCartRepository : IRepository<ShoppingCart>
+    public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
+        public IEnumerable<ShoppingCart> GetShoppingCart(string shoppingCartId);
     }
 }

@@ -8,8 +8,9 @@ namespace ECommerceWebApp.Models
     {
         public Account()
         {
-            Id = "test";//Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
             Type = AccountType.Customer;
+            ShoppingCartId = Guid.NewGuid().ToString();
         }
 
         public enum AccountType
@@ -40,6 +41,6 @@ namespace ECommerceWebApp.Models
         [Column(TypeName = "text")]
         public string Phone { get; set; }
         public string Address { get; set; }
-
+        public string ShoppingCartId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ECommerceWebApp.Services;
+﻿using ECommerceWebApp.Models;
+using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +10,14 @@ namespace ECommerceWebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly AccountService _accountService;
         private readonly AuthService _authService;
+        private readonly ShoppingCartService _shoppingCartService;
 
-        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService)
+        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService, ShoppingCartService shoppingCartService)
         {
             _logger = logger;
             _accountService = accountService;
             _authService = authService;
+            _shoppingCartService = shoppingCartService;
         }
 
         public IActionResult Register()
@@ -43,8 +46,10 @@ namespace ECommerceWebApp.Controllers
 
                 else
                 {
-                    string newAccountId = await _accountService.CreateAccount(newAccount);
-                    await _authService.CreateAuth(newAccountId, newAccount.Password);
+                    Account newUserAccount = await _accountService.CreateAccount(newAccount);
+                    _shoppingCartService.CreateNewAccountShoppingCart(newUserAccount);
+                    await _authService.CreateAuth(newUserAccount.Id, newAccount.Password);
+
                     return RedirectToAction("Index", "Home");
                 }
             }

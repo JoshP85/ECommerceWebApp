@@ -13,7 +13,7 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> CreateAccount(RegisterViewModel newAccount)
+        public async Task<Account> CreateAccount(RegisterViewModel newAccount)
         {
             var newUserAccount = new Account
             {
@@ -29,7 +29,7 @@ namespace ECommerceWebApp.Services
             }
 
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);
-            return newUserAccount.Id;
+            return newUserAccount;
         }
 
         // Checks if password and confirm password fields match
@@ -42,6 +42,15 @@ namespace ECommerceWebApp.Services
         public async Task<bool> IsEmailInUseAsync(string email)
         {
             return await _unitOfWork.AccountRepository.IsEmailInUseAsync(email);
+        }
+
+        public async Task AddShoppingCartIdToAccount(string Id, string shoppingCartId)
+        {
+            Account account = await _unitOfWork.AccountRepository.GetByIdAsync(Id);
+            account.ShoppingCartId = shoppingCartId;
+
+            _unitOfWork.AccountRepository.Update(account);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
