@@ -17,11 +17,10 @@ namespace ECommerceWebApp.Controllers
 
         public IActionResult ShoppingCart()
         {
-            var whatver = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
-            return View(whatver);
+            return View(_shoppingCartService.GetShoppingCartById(ShoppingCartId));
         }
 
-        public async Task<IActionResult> AddToCart(string producId, decimal productPrice)
+        public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
         {
             // Use later for logged out adding to cart func.
             /*if (AccountId == null)
@@ -30,12 +29,14 @@ namespace ECommerceWebApp.Controllers
                 HttpContext.Session.SetString(nameof(Models.ShoppingCart.CartId), shoppingCart.CartId);
             }*/
 
-            ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
+            //ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
 
-            ShoppingItem item = await _shoppingCartService.CreateNewShoppingItem(producId, productPrice, ShoppingCartId);
+            /*            ShoppingItem item = await _shoppingCartService.CreateNewShoppingItem(productId, productPrice, ShoppingCartId);*/
 
-            var result = await _shoppingCartService.AddToCart(ShoppingCartId, item);
+            var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
 
+
+            // TODO: Implement error message
             if (result)
             {
                 return RedirectToAction("Index", "Home");
