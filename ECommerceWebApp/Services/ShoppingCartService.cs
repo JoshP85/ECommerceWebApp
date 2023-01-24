@@ -33,17 +33,17 @@ namespace ECommerceWebApp.Services
             return true;
         }
 
-        public async Task<ShoppingItem> CreateNewShoppingItem(string id, decimal price, string shoppingCartId)
+        public async Task<ShoppingItem> CreateNewShoppingItem(string producId, decimal productPrice, string shoppingCartId)
         {
 
             var quantity = 1;
             ShoppingItem newItem = new()
             {
                 Id = Guid.NewGuid().ToString(),
-                ProductId = id,
+                ProductId = producId,
                 ShoppingCartId = shoppingCartId,
                 Quantity = quantity,
-                TotalPrice = quantity * price,
+                TotalPrice = quantity * productPrice,
             };
             await _shoppingItemUnitOfWork.ShoppingItemRepository.AddAsync(newItem);
             return newItem;
@@ -72,9 +72,9 @@ namespace ECommerceWebApp.Services
 
         }
 
-        public IEnumerable<ShoppingCart> GetShoppingCart(string shoppingCartId)
+        public ShoppingCart GetShoppingCartById(string shoppingCartId)
         {
-            return _unitOfWork.ShoppingCartRepository.GetShoppingCart(shoppingCartId);
+            return _unitOfWork.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
         }
     }
 }

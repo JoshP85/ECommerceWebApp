@@ -17,20 +17,22 @@ namespace ECommerceWebApp.Controllers
 
         public IActionResult ShoppingCart()
         {
-            return View(_shoppingCartService.GetShoppingCart(ShoppingCartId));
+            var whatver = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
+            return View(whatver);
         }
 
-        public async Task<IActionResult> AddToCart(string id, decimal price)
+        public async Task<IActionResult> AddToCart(string producId, decimal productPrice)
         {
-            if (AccountId == null)
+            // Use later for logged out adding to cart func.
+            /*if (AccountId == null)
             {
                 var shoppingCart = _shoppingCartService.CreateShoppingCart();
                 HttpContext.Session.SetString(nameof(Models.ShoppingCart.CartId), shoppingCart.CartId);
-            }
+            }*/
 
+            ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
 
-
-            ShoppingItem item = await _shoppingCartService.CreateNewShoppingItem(id, price, ShoppingCartId);
+            ShoppingItem item = await _shoppingCartService.CreateNewShoppingItem(producId, productPrice, ShoppingCartId);
 
             var result = await _shoppingCartService.AddToCart(ShoppingCartId, item);
 

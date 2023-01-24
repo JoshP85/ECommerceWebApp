@@ -22,7 +22,7 @@
                     <td>@product.Name</td>
                     <td>@product.Description</td>
                     <td>@product.Price</td>
-                    <td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { id = product.Id, price = product.Price}, null)</td>
+                    <td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { productId = product.Id, productPrice = product.Price}, null)</td>
                 </tr>
             }
         }

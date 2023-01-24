@@ -12,7 +12,11 @@ namespace ECommerceWebApp.Data
             _context = context;
         }
 
-        public IEnumerable<ShoppingCart> GetShoppingCart(string shoppingCartId) => _context.ShoppingCarts.Where(sc => sc.CartId == shoppingCartId).Include(sc => sc.CartItems).ToList();
+        public ShoppingCart GetShoppingCartById(string shoppingCartId) =>
+            _context.ShoppingCarts
+            .Where(sc => sc.CartId == shoppingCartId)
+            .Include(sc => sc.CartItems)
+            .ThenInclude(ci => ci.Product).FirstOrDefault();
 
     }
 }
