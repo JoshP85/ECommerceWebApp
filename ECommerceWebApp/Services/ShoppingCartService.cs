@@ -19,32 +19,27 @@ namespace ECommerceWebApp.Services
         public async Task<bool> AddToCart(string shoppingCartId, /*ShoppingCart shoppingCart,*/ string productId)
         {
             ShoppingCart shoppingCart = GetShoppingCartById(shoppingCartId);
-            //ShoppingCart shoppingCart = await _unitOfWork.ShoppingCartRepository.GetByIdAsync(shoppingCartId);
-            /*            if (shoppingCart == null)
-                        {
-                            shoppingCart = new ShoppingCart()
-                            {
-                                CartId = shoppingCartId,
-                                TotalPrice = item.TotalPrice,
-                                AccountId = null,
-                                CartItems = new List<ShoppingItem>()
-                            };
-                            await _unitOfWork.ShoppingCartRepository.AddAsync(shoppingCart);
-                        }*/
-            foreach (var cartItem in shoppingCart.CartItems)
+
+            var cartItem = await _shoppingItemUnitOfWork.ShoppingItemRepository.GetProductAlreadyInCart(productId, shoppingCartId);
+
+            /*            if (_shoppingItemUnitOfWork.ShoppingItemRepository.IsProductAlreadyInCart(productId, shoppingCartId))*/
+            if (cartItem != null)
             {
-                if (cartItem.ProductId == productId)
-                {
-                    cartItem.Quantity += 1;
-                    _shoppingItemUnitOfWork.ShoppingItemRepository.Update(cartItem);
-                    await _unitOfWork.SaveChangesAsync();
-                    return true;
-                }
+                //ShoppingItem cartItem = await _shoppingItemUnitOfWork.ShoppingItemRepository.GetProductAlreadyInCart(productId, shoppingCartId);
+                cartItem.Quantity += 1;
+                cartItem.TotalPrice = cartItem.Product.Price * cartItem.Quantity;
+                _shoppingItemUnitOfWork.ShoppingItemRepository.Update(cartItem);
+                _unitOfWork.ShoppingCartRepository.Update(shoppingCart);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
             }
-            ShoppingItem item = await CreateNewShoppingItem(await _productService.GetProductByIdAsync(productId), shoppingCart);
-            shoppingCart.CartItems.Add(item);
-            await _unitOfWork.SaveChangesAsync();
-            return true;
+            else
+            {
+                ShoppingItem item = await CreateNewShoppingItem(await _productService.GetProductByIdAsync(productId), shoppingCart);
+                shoppingCart.CartItems.Add(item);
+                await _unitOfWork.SaveChangesAsync();
+                return true;
+            }
         }
 
         public async Task<ShoppingItem> CreateNewShoppingItem(Product product, ShoppingCart shoppingCart)
@@ -59,31 +54,6 @@ namespace ECommerceWebApp.Services
             };
             await _shoppingItemUnitOfWork.ShoppingItemRepository.AddAsync(newItem);
             return newItem;
-        }
-        /*        public async Task<ShoppingItem> CreateNewShoppingItem(string productId, decimal productPrice, string shoppingCartId)
-                {
-
-                    var quantity = 1;
-                    ShoppingItem newItem = new()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        ProductId = productId,
-                        ShoppingCartId = shoppingCartId,
-                        Quantity = quantity,
-                        TotalPrice = quantity * productPrice,
-                    };
-                    await _shoppingItemUnitOfWork.ShoppingItemRepository.AddAsync(newItem);
-                    return newItem;
-                }*/
-
-        public ShoppingCart CreateShoppingCart()
-        {
-            return new ShoppingCart()
-            {
-                CartId = Guid.NewGuid().ToString(),
-                TotalPrice = 0,
-                AccountId = null,
-            };
         }
 
         public void CreateNewAccountShoppingCart(Account newUserAccount)
@@ -102,6 +72,11 @@ namespace ECommerceWebApp.Services
         public ShoppingCart GetShoppingCartById(string shoppingCartId)
         {
             return _unitOfWork.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
+        }
+
+        public decimal GetTotalCostOfCartItems(string cartId)
+        {
+            return _shoppingItemUnitOfWork.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
         }
     }
 }

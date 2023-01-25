@@ -1,5 +1,6 @@
 ﻿using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
+using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceWebApp.Controllers
@@ -17,7 +18,17 @@ namespace ECommerceWebApp.Controllers
 
         public IActionResult ShoppingCart()
         {
-            return View(_shoppingCartService.GetShoppingCartById(ShoppingCartId));
+            var cart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
+            ShoppingCartViewModel scvm = new()
+            {
+                CartId = cart.CartId,
+                CartItems = cart.CartItems,
+                Account = cart.Account,
+                AccountId = cart.AccountId,
+                CartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.CartId),
+            };
+
+            return View(scvm);
         }
 
         public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
