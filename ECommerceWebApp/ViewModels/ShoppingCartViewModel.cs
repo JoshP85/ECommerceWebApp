@@ -11,7 +11,7 @@ namespace ECommerceWebApp.ViewModels
         public Account Account { get; set; }
         public string AccountId { get; set; }
         public decimal ItemTotalPrice { get; set; }
-        public decimal CartTotalPrice { get; set; }
+        public decimal ShoppingCartTotalPrice { get; set; }
 
 
 

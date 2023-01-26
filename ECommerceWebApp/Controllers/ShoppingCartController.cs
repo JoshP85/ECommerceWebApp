@@ -29,7 +29,7 @@ namespace ECommerceWebApp.Controllers
                 CartItems = cart.CartItems,
                 Account = cart.Account,
                 AccountId = cart.AccountId,
-                CartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.ShoppingCartId),
+                ShoppingCartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.ShoppingCartId),
             };
 
             return View(scvm);
