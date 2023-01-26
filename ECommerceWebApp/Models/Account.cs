@@ -8,10 +8,10 @@ namespace ECommerceWebApp.Models
     {
         public Account()
         {
-            Id = Guid.NewGuid().ToString();
+            AccountId = Guid.NewGuid().ToString();
             Type = AccountType.Customer;
             ShoppingCartId = Guid.NewGuid().ToString();
-            ShoppingCart = new(ShoppingCartId, this, Id);
+            ShoppingCart = new(ShoppingCartId, this, AccountId);
         }
 
         public enum AccountType
@@ -22,7 +22,7 @@ namespace ECommerceWebApp.Models
         }
 
         [Key]
-        public string Id { get; set; }
+        public string AccountId { get; set; }
         public AccountType Type { get; set; }
 
         [Required(ErrorMessage = "Your first name is required.")]

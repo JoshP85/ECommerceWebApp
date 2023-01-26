@@ -11,7 +11,7 @@ namespace ECommerceWebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly AuthService _authService;
         private readonly AccountService _accountService;
-        private string ShoppingCartId => HttpContext.Session.GetString(nameof(ShoppingCart.CartId));
+        private string ShoppingCartId => HttpContext.Session.GetString(nameof(ShoppingCart.ShoppingCartId));
         public AuthController(ILogger<HomeController> logger, AuthService authService, AccountService accountService)
         {
             _logger = logger;
@@ -36,7 +36,7 @@ namespace ECommerceWebApp.Controllers
 
                     if (account != null)
                     {
-                        HttpContext.Session.SetString(nameof(Account.Id), account.Id);
+                        HttpContext.Session.SetString(nameof(Account.AccountId), account.AccountId);
                         HttpContext.Session.SetString(nameof(Account.FirstName), account.FirstName);
                         HttpContext.Session.SetString(nameof(Account.ShoppingCartId), account.ShoppingCartId);
 

@@ -18,7 +18,7 @@ namespace ECommerceWebApp.Services
         public async Task<ShoppingItem> UpdateShoppingItem(ShoppingItem cartItem)
         {
             cartItem.Quantity += 1;
-            cartItem.TotalPrice = cartItem.Product.Price * cartItem.Quantity;
+            cartItem.ShoppingItemTotalPrice = cartItem.Product.Price * cartItem.Quantity;
 
             _unitOfWork.ShoppingItemRepository.Update(cartItem);
 
@@ -31,11 +31,11 @@ namespace ECommerceWebApp.Services
         {
             ShoppingItem newItem = new()
             {
-                Id = Guid.NewGuid().ToString(),
-                ProductId = product.Id,
-                ShoppingCartId = shoppingCart.CartId,
+                ShoppingItemId = Guid.NewGuid().ToString(),
+                ProductId = product.ProductId,
+                ShoppingCartId = shoppingCart.ShoppingCartId,
                 Quantity = 1,
-                TotalPrice = product.Price,
+                ShoppingItemTotalPrice = product.Price,//Is this needed?
             };
 
             await _unitOfWork.ShoppingItemRepository.AddAsync(newItem);

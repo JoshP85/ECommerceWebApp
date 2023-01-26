@@ -8,7 +8,7 @@ namespace ECommerceWebApp.Controllers
     public class ShoppingCartController : Controller
     {
         private string ShoppingCartId => HttpContext.Session.GetString(nameof(Account.ShoppingCartId));
-        private string AccountId => HttpContext.Session.GetString(nameof(Account.Id));
+        private string AccountId => HttpContext.Session.GetString(nameof(Account.AccountId));
 
         private readonly ShoppingCartService _shoppingCartService;
         private readonly ShoppingItemService _shoppingItemService;
@@ -25,11 +25,11 @@ namespace ECommerceWebApp.Controllers
             var cart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
             ShoppingCartViewModel scvm = new()
             {
-                CartId = cart.CartId,
+                CartId = cart.ShoppingCartId,
                 CartItems = cart.CartItems,
                 Account = cart.Account,
                 AccountId = cart.AccountId,
-                CartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.CartId),
+                CartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.ShoppingCartId),
             };
 
             return View(scvm);

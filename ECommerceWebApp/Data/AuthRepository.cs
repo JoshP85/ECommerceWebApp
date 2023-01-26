@@ -14,7 +14,7 @@ namespace ECommerceWebApp.Data
         public string GetPassword(string providedEmail)
         {
             var password = (from a in _context.Accounts
-                            join b in _context.AuthItems on a.Id equals b.Id
+                            join b in _context.AuthItems on a.AccountId equals b.AccountId
                             where a.Email == providedEmail
                             select b.Password).FirstOrDefault();
 

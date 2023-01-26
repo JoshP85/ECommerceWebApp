@@ -6,7 +6,8 @@ namespace ECommerceWebApp.Models
 {
     public class Auth
     {
-        public string Id { get; set; }
+        [Key]
+        public string AccountId { get; set; }
 
         [Required(ErrorMessage = "A valid password is required.")]
         [Column(TypeName = "text")]

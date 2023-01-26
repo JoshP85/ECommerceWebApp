@@ -25,7 +25,7 @@ namespace ECommerceWebApp.Data
 
         public async Task<bool> IsIdInUseAsync(string id)
         {
-            return await _context.Accounts.AnyAsync(_account => _account.Id == id);
+            return await _context.Accounts.AnyAsync(_account => _account.AccountId == id);
         }
     }
 }

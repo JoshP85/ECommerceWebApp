@@ -1,14 +1,19 @@
-﻿namespace ECommerceWebApp.Models
+﻿
+
+using System.ComponentModel.DataAnnotations;
+
+namespace ECommerceWebApp.Models
 {
     public class ShoppingItem
     {
-        public string Id { get; set; }
+        [Key]
+        public string ShoppingItemId { get; set; }
         public Product Product { get; set; }
         public string ProductId { get; set; }
         public string ShoppingCartId { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal ShoppingItemTotalPrice { get; set; }
 
     }
 }

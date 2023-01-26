@@ -48,7 +48,7 @@ namespace ECommerceWebApp.Controllers
                 {
                     Account newUserAccount = await _accountService.CreateAccount(newAccount);
 
-                    await _authService.CreateAuth(newUserAccount.Id, newAccount.Password);
+                    await _authService.CreateAuth(newUserAccount.AccountId, newAccount.Password);
 
                     return RedirectToAction("Index", "Home");
                 }

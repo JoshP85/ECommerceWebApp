@@ -23,9 +23,9 @@ namespace ECommerceWebApp.Services
             };
 
             // Make sure the new account has a unique Id, if not asign new Id.
-            while (await _unitOfWork.AccountRepository.IsIdInUseAsync(newUserAccount.Id))
+            while (await _unitOfWork.AccountRepository.IsIdInUseAsync(newUserAccount.AccountId))
             {
-                newUserAccount.Id = Guid.NewGuid().ToString();
+                newUserAccount.AccountId = Guid.NewGuid().ToString();
             }
 
             await _unitOfWork.AccountRepository.AddAsync(newUserAccount);

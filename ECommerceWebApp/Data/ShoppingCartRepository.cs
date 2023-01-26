@@ -14,7 +14,7 @@ namespace ECommerceWebApp.Data
 
         public ShoppingCart GetShoppingCartById(string shoppingCartId) =>
             _context.ShoppingCarts
-            .Where(sc => sc.CartId == shoppingCartId)
+            .Where(sc => sc.ShoppingCartId == shoppingCartId)
             .Include(sc => sc.Account)
             .Include(sc => sc.CartItems)
             .ThenInclude(ci => ci.Product).FirstOrDefault();

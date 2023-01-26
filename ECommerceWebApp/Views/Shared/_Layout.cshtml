@@ -30,7 +30,7 @@
                         </li>
                         @{
                             bool isLoggedIn = false;
-                            if (Context.Session.GetString(nameof(Account.Id)) != null)
+                            if (Context.Session.GetString(nameof(Account.AccountId)) != null)
                             {
                                 isLoggedIn = true;
                             }

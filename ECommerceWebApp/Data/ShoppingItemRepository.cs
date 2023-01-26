@@ -15,7 +15,7 @@ namespace ECommerceWebApp.Data
         public decimal GetTotalCostOfCartItems(string shoppingCartId) =>
             _context.ShoppingItems.
             Where(i => i.ShoppingCartId == shoppingCartId).
-            Sum(x => x.TotalPrice);
+            Sum(x => x.ShoppingItemTotalPrice);
 
         public bool IsProductAlreadyInCart(string productId, string shoppingCartId) =>
             _context.ShoppingItems.
