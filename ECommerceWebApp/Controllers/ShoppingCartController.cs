@@ -11,9 +11,13 @@ namespace ECommerceWebApp.Controllers
         private string AccountId => HttpContext.Session.GetString(nameof(Account.Id));
 
         private readonly ShoppingCartService _shoppingCartService;
-        public ShoppingCartController(ShoppingCartService shoppingCartService)
+        private readonly ShoppingItemService _shoppingItemService;
+        private readonly ProductService _productService;
+        public ShoppingCartController(ShoppingCartService shoppingCartService, ShoppingItemService shoppingItemService, ProductService productService)
         {
             _shoppingCartService = shoppingCartService;
+            _shoppingItemService = shoppingItemService;
+            _productService = productService;
         }
 
         public IActionResult ShoppingCart()
@@ -33,26 +37,21 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
         {
-            // Use later for logged out adding to cart func.
-            /*if (AccountId == null)
+            ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
+            Product product = await _productService.GetProductByIdAsync(productId);
+            ShoppingItem shoppingItem = await _shoppingItemService.GetShoppingItemInCart(productId, ShoppingCartId);
+
+            if (shoppingItem != null)
             {
-                var shoppingCart = _shoppingCartService.CreateShoppingCart();
-                HttpContext.Session.SetString(nameof(Models.ShoppingCart.CartId), shoppingCart.CartId);
-            }*/
-
-            //ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
-
-            /*            ShoppingItem item = await _shoppingCartService.CreateNewShoppingItem(productId, productPrice, ShoppingCartId);*/
-
-            var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
-
-
-            // TODO: Implement error message
-            if (result)
-            {
+                await _shoppingItemService.UpdateShoppingItem(shoppingItem);
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                ShoppingItem newShoppingItem = await _shoppingItemService.CreateShoppingItem(product, shoppingCart);
+                await _shoppingCartService.AddToCart(shoppingCart, newShoppingItem);
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

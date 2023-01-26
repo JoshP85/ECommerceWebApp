@@ -23,6 +23,11 @@ namespace ECommerceWebApp.Data
                 .HasMany(s => s.CartItems)
                 .WithOne(i => i.ShoppingCart)
                 .HasForeignKey(i => i.ShoppingCartId);
+
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.ShoppingCart)
+                .WithOne(s => s.Account)
+                .HasForeignKey<ShoppingCart>(s => s.AccountId);
         }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Auth> AuthItems { get; set; }

@@ -4,6 +4,18 @@ namespace ECommerceWebApp.Models
 {
     public class ShoppingCart
     {
+        public ShoppingCart()
+        {
+        }
+
+        public ShoppingCart(string cartId, Account account, string accountId)
+        {
+            CartId = cartId;
+            TotalPrice = 0.00M;
+            Account = account;
+            AccountId = accountId;
+        }
+
         [Key]
         public string CartId { get; set; }
         public virtual ICollection<ShoppingItem> CartItems { get; set; } /*= new List<ShoppingItem>();*/

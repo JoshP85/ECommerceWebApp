@@ -23,7 +23,7 @@ namespace ECommerceWebApp.Data
             Select(p => p.ProductId).
             Contains(productId);
 
-        public async Task<ShoppingItem> GetProductAlreadyInCart(string productId, string shoppingCartId) =>
+        public async Task<ShoppingItem> GetShoppingItemInCart(string productId, string shoppingCartId) =>
             await _context.ShoppingItems.
             Where(i => i.ShoppingCartId == shoppingCartId &&
             i.ProductId == productId).FirstOrDefaultAsync();

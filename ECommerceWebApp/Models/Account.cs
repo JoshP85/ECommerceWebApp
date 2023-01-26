@@ -11,6 +11,7 @@ namespace ECommerceWebApp.Models
             Id = Guid.NewGuid().ToString();
             Type = AccountType.Customer;
             ShoppingCartId = Guid.NewGuid().ToString();
+            ShoppingCart = new(ShoppingCartId, this, Id);
         }
 
         public enum AccountType
@@ -42,5 +43,6 @@ namespace ECommerceWebApp.Models
         public string Phone { get; set; }
         public string Address { get; set; }
         public string ShoppingCartId { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
     }
 }
