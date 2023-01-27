@@ -5,31 +5,32 @@ namespace ECommerceWebApp.Services
 {
     public class ShoppingItemService
     {
-        private readonly IUnitOfWork<ShoppingItem> _unitOfWork;
+        private readonly IUnitOfWork<ShoppingItem> _unitOfWorkShoppingItem;
 
-        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWork)
+        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
         }
 
-        public async Task<ShoppingItem> GetShoppingItemInCart(string productId, string shoppingCartId) =>
-            await _unitOfWork.ShoppingItemRepository.GetShoppingItemInCart(productId, shoppingCartId);
-
-        public async Task<ShoppingItem> UpdateShoppingItem(ShoppingItem cartItem)
+        public ShoppingItem GetItemFromCartByProductId(string productId, ShoppingCart shoppingCart)
         {
-            cartItem.Quantity += 1;
-            cartItem.ShoppingItemTotalPrice = cartItem.Product.Price * cartItem.Quantity;
+            return shoppingCart.CartItems.
+            Where(i => i.ProductId == productId).FirstOrDefault();
+        }
 
-            _unitOfWork.ShoppingItemRepository.Update(cartItem);
+        public bool UpdateShoppingItem(ShoppingItem shoppingItem)
+        {
+            shoppingItem.Quantity += 1;
+            shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
 
-            await _unitOfWork.SaveChangesAsync();
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
 
-            return null;
+            return true;
         }
 
         public async Task<ShoppingItem> CreateShoppingItem(Product product, ShoppingCart shoppingCart)
         {
-            ShoppingItem newItem = new()
+            ShoppingItem newShoppingItem = new()
             {
                 ShoppingItemId = Guid.NewGuid().ToString(),
                 ProductId = product.ProductId,
@@ -38,9 +39,9 @@ namespace ECommerceWebApp.Services
                 ShoppingItemTotalPrice = product.Price,//Is this needed?
             };
 
-            await _unitOfWork.ShoppingItemRepository.AddAsync(newItem);
+            await _unitOfWorkShoppingItem.ShoppingItemRepository.AddAsync(newShoppingItem);
 
-            return newItem;
+            return newShoppingItem;
         }
     }
 }

@@ -5,32 +5,62 @@ namespace ECommerceWebApp.Services
 {
     public class ShoppingCartService
     {
-        private readonly IUnitOfWork<ShoppingCart> _unitOfWork;
-        private readonly IUnitOfWork<ShoppingItem> _shoppingItemUnitOfWork;
+        private readonly IUnitOfWork<ShoppingCart> _unitOfWorkShoppingCart;
+        private readonly IUnitOfWork<ShoppingItem> _unitOfWorkShoppingItem;
         private readonly ProductService _productService;
+        private readonly ShoppingItemService _shoppingItemService;
 
-        public ShoppingCartService(IUnitOfWork<ShoppingCart> unitOfWork, IUnitOfWork<ShoppingItem> shoppingItemUnitOfWork, ProductService productService)
+        public ShoppingCartService(IUnitOfWork<ShoppingCart> unitOfWorkShoppingCart, IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem, ProductService productService, ShoppingItemService shoppingItemService)
         {
-            _unitOfWork = unitOfWork;
-            _shoppingItemUnitOfWork = shoppingItemUnitOfWork;
+            _unitOfWorkShoppingCart = unitOfWorkShoppingCart;
+            _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
             _productService = productService;
+            _shoppingItemService = shoppingItemService;
         }
 
-        public async Task<bool> AddToCart(ShoppingCart shoppingCart, ShoppingItem cartItem)
+        public async Task<bool> AddToCart(string shoppingCartId, string productId)
         {
-            shoppingCart.CartItems.Add(cartItem);
-            await _unitOfWork.SaveChangesAsync();
+            ShoppingCart shoppingCart =
+                _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
+
+            Product product =
+                await _productService.GetProductByIdAsync(productId);
+
+            ShoppingItem shoppingItem =
+                _shoppingItemService.GetItemFromCartByProductId(productId, shoppingCart);
+
+            if (shoppingItem != null)
+            {
+                _shoppingItemService.UpdateShoppingItem(shoppingItem);
+            }
+            else
+            {
+                shoppingCart.CartItems.Add(
+                    await _shoppingItemService.CreateShoppingItem(product, shoppingCart));
+            }
+
+            UpdateShoppingCartTotalPrice(shoppingCart, product.Price);
+
+            await _unitOfWorkShoppingCart.SaveChangesAsync();
+
             return true;
+        }
+
+        public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal productPrice)
+        {
+            shoppingCart.ShoppingCartTotalPrice += productPrice;
+            _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
         }
 
         public ShoppingCart GetShoppingCartById(string shoppingCartId)
         {
-            return _unitOfWork.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
+            return _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
         }
 
+        // Not needed
         public decimal GetTotalCostOfCartItems(string cartId)
         {
-            return _shoppingItemUnitOfWork.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
+            return _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
         }
     }
 }

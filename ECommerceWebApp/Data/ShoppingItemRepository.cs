@@ -12,6 +12,7 @@ namespace ECommerceWebApp.Data
             _context = context;
         }
 
+        //Not needed
         public decimal GetTotalCostOfCartItems(string shoppingCartId) =>
             _context.ShoppingItems.
             Where(i => i.ShoppingCartId == shoppingCartId).
@@ -23,7 +24,7 @@ namespace ECommerceWebApp.Data
             Select(p => p.ProductId).
             Contains(productId);
 
-        public async Task<ShoppingItem> GetShoppingItemInCart(string productId, string shoppingCartId) =>
+        public async Task<ShoppingItem> GetItemFromCartByProductId(string productId, string shoppingCartId) =>
             await _context.ShoppingItems.
             Where(i => i.ShoppingCartId == shoppingCartId &&
             i.ProductId == productId).FirstOrDefaultAsync();

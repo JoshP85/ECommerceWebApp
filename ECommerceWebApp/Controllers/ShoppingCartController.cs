@@ -29,7 +29,7 @@ namespace ECommerceWebApp.Controllers
                 CartItems = cart.CartItems,
                 Account = cart.Account,
                 AccountId = cart.AccountId,
-                ShoppingCartTotalPrice = _shoppingCartService.GetTotalCostOfCartItems(cart.ShoppingCartId),
+                ShoppingCartTotalPrice = cart.ShoppingCartTotalPrice,
             };
 
             return View(scvm);
@@ -37,21 +37,9 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
         {
-            ShoppingCart shoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
-            Product product = await _productService.GetProductByIdAsync(productId);
-            ShoppingItem shoppingItem = await _shoppingItemService.GetShoppingItemInCart(productId, ShoppingCartId);
+            var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
 
-            if (shoppingItem != null)
-            {
-                await _shoppingItemService.UpdateShoppingItem(shoppingItem);
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ShoppingItem newShoppingItem = await _shoppingItemService.CreateShoppingItem(product, shoppingCart);
-                await _shoppingCartService.AddToCart(shoppingCart, newShoppingItem);
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -7,6 +7,6 @@ namespace ECommerceWebApp.Data.Interfaces
         public decimal GetTotalCostOfCartItems(string cartId);
 
         public bool IsProductAlreadyInCart(string productId, string shoppingCartId);
-        public Task<ShoppingItem> GetShoppingItemInCart(string productId, string shoppingCartId);
+        public Task<ShoppingItem> GetItemFromCartByProductId(string productId, string shoppingCartId);
     }
 }
