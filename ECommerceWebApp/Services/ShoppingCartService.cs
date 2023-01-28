@@ -20,8 +20,11 @@ namespace ECommerceWebApp.Services
 
         public async Task<bool> AddToCart(string shoppingCartId, string productId)
         {
-            ShoppingCart shoppingCart =
-                _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
+            ShoppingCart shoppingCart = GetShoppingCartById(shoppingCartId);
+            if (shoppingCart == null)
+            {
+                return false;
+            }
 
             Product product =
                 await _productService.GetProductByIdAsync(productId);
@@ -57,10 +60,6 @@ namespace ECommerceWebApp.Services
             return _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
         }
 
-        // Not needed
-        public decimal GetTotalCostOfCartItems(string cartId)
-        {
-            return _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
-        }
+
     }
 }

@@ -30,18 +30,27 @@ namespace ECommerceWebApp.Services
 
         public async Task<ShoppingItem> CreateShoppingItem(Product product, ShoppingCart shoppingCart)
         {
-            ShoppingItem newShoppingItem = new()
-            {
-                ShoppingItemId = Guid.NewGuid().ToString(),
-                ProductId = product.ProductId,
-                ShoppingCartId = shoppingCart.ShoppingCartId,
-                Quantity = 1,
-                ShoppingItemTotalPrice = product.Price,//Is this needed?
-            };
+            ShoppingItem newShoppingItem = new(shoppingCart, product);
+            /*            {
+                            ShoppingCart = shoppingCart,
+                            ShoppingCartId = shoppingCart.ShoppingCartId,
+                            Product = product,
+                            ProductId = product.ProductId,
+                            Quantity = 1,
+                            ShoppingItemTotalPrice = product.Price,//Is this needed?
+                        };*/
 
             await _unitOfWorkShoppingItem.ShoppingItemRepository.AddAsync(newShoppingItem);
 
             return newShoppingItem;
         }
+
+        // Not needed
+        public decimal GetTotalCostOfCartItems(string cartId)
+        {
+            return _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
+        }
+
+
     }
 }

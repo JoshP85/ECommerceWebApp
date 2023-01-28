@@ -22,6 +22,11 @@ namespace ECommerceWebApp.Controllers
 
         public IActionResult ShoppingCart()
         {
+            if (ShoppingCartId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var cart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
             ShoppingCartViewModel scvm = new()
             {
@@ -37,8 +42,21 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
         {
-            var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
+            if (ModelState.IsValid)
+            {
+                var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
+                //TODO: Add error messages
+                if (result is true)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
 
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
             return RedirectToAction("Index", "Home");
         }
     }
