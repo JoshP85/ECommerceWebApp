@@ -1,4 +1,5 @@
 ﻿using ECommerceWebApp.Data.Interfaces;
+using ECommerceWebApp.DTOs;
 using ECommerceWebApp.Models;
 
 namespace ECommerceWebApp.Services
@@ -25,7 +26,7 @@ namespace ECommerceWebApp.Services
             {
                 return false;
             }
-
+            //Check if this is needed
             Product product =
                 await _productService.GetProductByIdAsync(productId);
 
@@ -47,6 +48,32 @@ namespace ECommerceWebApp.Services
             await _unitOfWorkShoppingCart.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItem)
+        {
+            shoppingItem.ShoppingCart =
+                    GetShoppingCartById(shoppingItem.ShoppingCartId);
+
+            shoppingItem.ShoppingItem =
+                await _shoppingItemService.GetShoppingItemById(shoppingItem.ShoppingItemId);
+
+            if (shoppingItem == null)
+            {
+                return false;
+            }
+
+            if (_shoppingItemService.RemoveShoppingItem(shoppingItem))
+            {
+                shoppingItem.ShoppingCart.ShoppingCartTotalPrice -= shoppingItem.ProductPrice;
+
+                _unitOfWorkShoppingItem.ShoppingCartRepository.Update(shoppingItem.ShoppingCart);
+
+                await _unitOfWorkShoppingCart.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
         }
 
         public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal productPrice)

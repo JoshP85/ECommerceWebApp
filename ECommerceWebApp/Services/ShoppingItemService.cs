@@ -1,4 +1,5 @@
 ﻿using ECommerceWebApp.Data.Interfaces;
+using ECommerceWebApp.DTOs;
 using ECommerceWebApp.Models;
 
 namespace ECommerceWebApp.Services
@@ -24,6 +25,20 @@ namespace ECommerceWebApp.Services
             shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
 
             _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
+            return true;
+        }
+
+        public bool RemoveShoppingItem(ShoppingItemDTO shoppingItem)
+        {
+            if (shoppingItem.QuantityInCart <= 1)
+            {
+                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem.ShoppingItem);
+                return true;
+            }
+
+            shoppingItem.ShoppingItem.Quantity -= 1;
+            shoppingItem.ShoppingItem.ShoppingItemTotalPrice -= shoppingItem.ProductPrice;
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem.ShoppingItem);
 
             return true;
         }
@@ -41,6 +56,11 @@ namespace ECommerceWebApp.Services
         public decimal GetTotalCostOfCartItems(string cartId)
         {
             return _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
+        }
+
+        public async Task<ShoppingItem> GetShoppingItemById(string Id)
+        {
+            return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetByIdAsync(Id);
         }
 
 

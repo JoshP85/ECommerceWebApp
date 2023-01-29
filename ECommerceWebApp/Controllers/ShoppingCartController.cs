@@ -1,4 +1,5 @@
-﻿using ECommerceWebApp.Models;
+﻿using ECommerceWebApp.DTOs;
+using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +28,9 @@ namespace ECommerceWebApp.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var cart = _shoppingCartService.GetShoppingCartById(ShoppingCartId);
             ShoppingCartViewModel scvm = new()
             {
-                CartId = cart.ShoppingCartId,
-                CartItems = cart.CartItems,
-                Account = cart.Account,
-                AccountId = cart.AccountId,
-                ShoppingCartTotalPrice = cart.ShoppingCartTotalPrice,
+                ShoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId),
             };
 
             return View(scvm);
@@ -44,6 +40,12 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                ShoppingItemDTO updateData = new ShoppingItemDTO()
+                {
+                    ProductId = productId,
+
+                };
+
                 var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
                 //TODO: Add error messages
                 if (result is true)
@@ -58,6 +60,17 @@ namespace ECommerceWebApp.Controllers
 
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _shoppingCartService.RemoveFromCart(shoppingItemDTO);
+            }
+
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
     }
 }

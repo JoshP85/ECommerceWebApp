@@ -7,29 +7,29 @@
     <h4>Shopping Cart</h4>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CartId)
+            @Html.DisplayNameFor(model => model.ShoppingCart.ShoppingCartId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CartId)
+            @Html.DisplayFor(model => model.ShoppingCart.ShoppingCartId)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountId)
+            @Html.DisplayNameFor(model => model.ShoppingCart.Account.AccountId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AccountId)
-        </dd>        
+            @Html.DisplayFor(model => model.ShoppingCart.Account.AccountId)
+        </dd>
         <dt class="col-sm-2">
             Name
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.FirstName)
-            @Html.DisplayFor(model => model.Account.LastName)
+            @Html.DisplayFor(model => model.ShoppingCart.Account.FirstName)
+            @Html.DisplayFor(model => model.ShoppingCart.Account.LastName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ShoppingCartTotalPrice)
+            @Html.DisplayNameFor(model => model.ShoppingCart.ShoppingCartTotalPrice)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ShoppingCartTotalPrice)
+            @Html.DisplayFor(model => model.ShoppingCart.ShoppingCartTotalPrice)
         </dd>
     </dl>
     <hr />
@@ -42,24 +42,29 @@
             <th>Price</th>
             <th>Total</th>
         </tr>
-        @foreach (var m in Model.CartItems)
+        @foreach (var shoppingItem in Model.ShoppingCart.CartItems)
         {
 
             <tr>
-                <td>@m.Product.ProductId</td>
-                <td>@m.Product.Name</td>
-                <td>@m.Quantity</td>
-                <td>@m.Product.Price</td>
-                <td>@m.ShoppingItemTotalPrice</td>
-                @*<td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { id = product.Id, price = product.Price}, null)</td>*@
+                <td>@shoppingItem.Product.ProductId</td>
+                <td>@shoppingItem.Product.Name</td>
+                <td>@shoppingItem.Quantity</td>
+                <td>@shoppingItem.Product.Price</td>
+                <td>@shoppingItem.ShoppingItemTotalPrice</td>
+                <td>
+                    <form method="post" asp-controller="ShoppingCart" asp-action="RemoveFromCart">
+                        <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
+                        <input type="hidden" name="ShoppingItemId" value="@shoppingItem.ShoppingItemId" />
+                        <input type="hidden" name="ProductId" value="@shoppingItem.ProductId" />
+                        <input type="hidden" name="ProductPrice" value="@shoppingItem.Product.Price" />
+                        <input type="hidden" name="QuantityInCart" value="@shoppingItem.Quantity" />
+
+                        <input type="submit" value="Remove" />
+                    </form>
+                </td>
             </tr>
         }
 
     </table>
-    
-</div>
-@*<div>
-    <a asp-action="Edit" asp-route-id="@Model?.CartId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>*@
 
+</div>
