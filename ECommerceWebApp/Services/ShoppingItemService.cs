@@ -28,17 +28,26 @@ namespace ECommerceWebApp.Services
             return true;
         }
 
-        public bool RemoveShoppingItem(ShoppingItemDTO shoppingItem)
+        public async Task<bool> RemoveShoppingItem(ShoppingItemDTO shoppingItemDTO)
         {
-            if (shoppingItem.QuantityInCart <= 1)
+            ShoppingItem shoppingItem =
+                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
+
+            if (shoppingItem == null)
             {
-                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem.ShoppingItem);
+                return false;
+            }
+
+            if (shoppingItem.Quantity <= 1)
+            {
+                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
                 return true;
             }
 
-            shoppingItem.ShoppingItem.Quantity -= 1;
-            shoppingItem.ShoppingItem.ShoppingItemTotalPrice -= shoppingItem.ProductPrice;
-            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem.ShoppingItem);
+            shoppingItem.Quantity -= 1;
+            shoppingItem.ShoppingItemTotalPrice -= shoppingItemDTO.ProductPrice;
+
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
 
             return true;
         }

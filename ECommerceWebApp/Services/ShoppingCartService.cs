@@ -50,24 +50,16 @@ namespace ECommerceWebApp.Services
             return true;
         }
 
-        public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItem)
+        public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
-            shoppingItem.ShoppingCart =
-                    GetShoppingCartById(shoppingItem.ShoppingCartId);
+            ShoppingCart shoppingCart =
+                    GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            shoppingItem.ShoppingItem =
-                await _shoppingItemService.GetShoppingItemById(shoppingItem.ShoppingItemId);
-
-            if (shoppingItem == null)
+            if (await _shoppingItemService.RemoveShoppingItem(shoppingItemDTO))
             {
-                return false;
-            }
+                shoppingCart.ShoppingCartTotalPrice -= shoppingItemDTO.ProductPrice;
 
-            if (_shoppingItemService.RemoveShoppingItem(shoppingItem))
-            {
-                shoppingItem.ShoppingCart.ShoppingCartTotalPrice -= shoppingItem.ProductPrice;
-
-                _unitOfWorkShoppingItem.ShoppingCartRepository.Update(shoppingItem.ShoppingCart);
+                _unitOfWorkShoppingItem.ShoppingCartRepository.Update(shoppingCart);
 
                 await _unitOfWorkShoppingCart.SaveChangesAsync();
 
