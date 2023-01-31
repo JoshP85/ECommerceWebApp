@@ -28,7 +28,7 @@ namespace ECommerceWebApp.Services
             Product product =
                 await _productService.GetProductByIdAsync(shoppingItemDTO.ProductId);
 
-            ShoppingItem shoppingItem = await _shoppingItemService.AddShoppingItem(product, shoppingCart);
+            ShoppingItem shoppingItem = await _shoppingItemService.AddShoppingItemToCart(product, shoppingCart);
             if (shoppingItem != null)
             {
                 shoppingCart.CartItems.Add(shoppingItem);
@@ -46,7 +46,7 @@ namespace ECommerceWebApp.Services
             ShoppingCart shoppingCart =
                     await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            if (await _shoppingItemService.RemoveShoppingItem(shoppingItemDTO))
+            if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
             {
                 UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
 

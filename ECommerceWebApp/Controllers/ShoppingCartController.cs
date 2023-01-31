@@ -64,7 +64,18 @@ namespace ECommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _shoppingCartService.RemoveFromCart(shoppingItemDTO);
+                var result = await _shoppingCartService.RemoveFromCart(shoppingItemDTO);
+
+                //TODO: Add error messages
+                if (result is true)
+                {
+                    return RedirectToAction("ShoppingCart", "ShoppingCart");
+                }
+                else
+                {
+
+                    return RedirectToAction("ShoppingCart", "ShoppingCart");
+                }
             }
 
             return RedirectToAction("ShoppingCart", "ShoppingCart");

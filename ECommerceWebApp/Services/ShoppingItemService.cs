@@ -13,14 +13,14 @@ namespace ECommerceWebApp.Services
             _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
         }
 
-        public async Task<ShoppingItem> AddShoppingItem(Product product, ShoppingCart shoppingCart)
+        public async Task<ShoppingItem> AddShoppingItemToCart(Product product, ShoppingCart shoppingCart)
         {
             ShoppingItem shoppingItem =
                 GetItemFromCartByProductId(product.ProductId, shoppingCart);
 
             if (shoppingItem != null)
             {
-                UpdateQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: 1);
+                UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: 1);
                 return null;
             }
             else
@@ -29,7 +29,7 @@ namespace ECommerceWebApp.Services
             }
         }
 
-        public async Task<bool> RemoveShoppingItem(ShoppingItemDTO shoppingItemDTO)
+        public async Task<bool> RemoveShoppingItemFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingItem shoppingItem =
                 await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
@@ -45,14 +45,14 @@ namespace ECommerceWebApp.Services
                 return true;
             }
 
-            UpdateQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
+            UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
 
             _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
 
             return true;
         }
 
-        public bool UpdateQuantityAndTotalPrice(ShoppingItem shoppingItem, int adjustQuantityBy)
+        public bool UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int adjustQuantityBy)
         {
             shoppingItem.Quantity += adjustQuantityBy;
             shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
