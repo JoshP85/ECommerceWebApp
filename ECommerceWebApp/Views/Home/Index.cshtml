@@ -24,7 +24,13 @@
                     <td>@product.Price</td>
                     @if (product.Quantity > 0)
                     {
-                        <td>@Html.ActionLink("Add to Cart", "AddToCart", "ShoppingCart", new { productId = product.ProductId, productPrice = product.Price}, null)</td>
+                        <td>
+                            <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
+                                <input type="hidden" name="ProductId" value="@product.ProductId" />
+                                <input type="hidden" name="ProductPrice" value="@product.Price" />
+                                <input type="submit" value="Add to Cart" />
+                            </form>
+                        </td>
                     }
                     else
                     {

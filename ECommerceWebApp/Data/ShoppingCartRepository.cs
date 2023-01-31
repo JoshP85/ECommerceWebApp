@@ -12,12 +12,12 @@ namespace ECommerceWebApp.Data
             _context = context;
         }
 
-        public ShoppingCart GetShoppingCartById(string shoppingCartId) =>
-            _context.ShoppingCarts
+        public async Task<ShoppingCart> GetShoppingCartById(string shoppingCartId) =>
+            await _context.ShoppingCarts
             .Where(sc => sc.ShoppingCartId == shoppingCartId)
             .Include(sc => sc.Account)
             .Include(sc => sc.CartItems)
-            .ThenInclude(ci => ci.Product).FirstOrDefault();
+            .ThenInclude(ci => ci.Product).FirstOrDefaultAsync();
 
     }
 }

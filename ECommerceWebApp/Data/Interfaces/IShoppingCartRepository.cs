@@ -4,6 +4,6 @@ namespace ECommerceWebApp.Data.Interfaces
 {
     public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
-        public ShoppingCart GetShoppingCartById(string shoppingCartId);
+        public Task<ShoppingCart> GetShoppingCartById(string shoppingCartId);
     }
 }

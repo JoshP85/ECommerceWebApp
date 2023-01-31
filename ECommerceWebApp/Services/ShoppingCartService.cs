@@ -7,43 +7,34 @@ namespace ECommerceWebApp.Services
     public class ShoppingCartService
     {
         private readonly IUnitOfWork<ShoppingCart> _unitOfWorkShoppingCart;
-        private readonly IUnitOfWork<ShoppingItem> _unitOfWorkShoppingItem;
         private readonly ProductService _productService;
         private readonly ShoppingItemService _shoppingItemService;
 
-        public ShoppingCartService(IUnitOfWork<ShoppingCart> unitOfWorkShoppingCart, IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem, ProductService productService, ShoppingItemService shoppingItemService)
+        public ShoppingCartService(IUnitOfWork<ShoppingCart> unitOfWorkShoppingCart, ProductService productService, ShoppingItemService shoppingItemService)
         {
             _unitOfWorkShoppingCart = unitOfWorkShoppingCart;
-            _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
             _productService = productService;
             _shoppingItemService = shoppingItemService;
         }
 
-        public async Task<bool> AddToCart(string shoppingCartId, string productId)
+        public async Task<bool> AddToCart(ShoppingItemDTO shoppingItemDTO)
         {
-            ShoppingCart shoppingCart = GetShoppingCartById(shoppingCartId);
+            ShoppingCart shoppingCart = await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
             if (shoppingCart == null)
             {
                 return false;
             }
-            //Check if this is needed
+
             Product product =
-                await _productService.GetProductByIdAsync(productId);
+                await _productService.GetProductByIdAsync(shoppingItemDTO.ProductId);
 
-            ShoppingItem shoppingItem =
-                _shoppingItemService.GetItemFromCartByProductId(productId, shoppingCart);
-
+            ShoppingItem shoppingItem = await _shoppingItemService.AddShoppingItem(product, shoppingCart);
             if (shoppingItem != null)
             {
-                _shoppingItemService.UpdateShoppingItem(shoppingItem);
-            }
-            else
-            {
-                shoppingCart.CartItems.Add(
-                    await _shoppingItemService.CreateShoppingItem(product, shoppingCart));
+                shoppingCart.CartItems.Add(shoppingItem);
             }
 
-            UpdateShoppingCartTotalPrice(shoppingCart, product.Price);
+            UpdateShoppingCartTotalPrice(shoppingCart, shoppingItemDTO.ProductPrice);
 
             await _unitOfWorkShoppingCart.SaveChangesAsync();
 
@@ -53,13 +44,11 @@ namespace ECommerceWebApp.Services
         public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingCart shoppingCart =
-                    GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
+                    await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
             if (await _shoppingItemService.RemoveShoppingItem(shoppingItemDTO))
             {
-                shoppingCart.ShoppingCartTotalPrice -= shoppingItemDTO.ProductPrice;
-
-                _unitOfWorkShoppingItem.ShoppingCartRepository.Update(shoppingCart);
+                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
 
                 await _unitOfWorkShoppingCart.SaveChangesAsync();
 
@@ -71,14 +60,13 @@ namespace ECommerceWebApp.Services
         public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal productPrice)
         {
             shoppingCart.ShoppingCartTotalPrice += productPrice;
+
             _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
         }
 
-        public ShoppingCart GetShoppingCartById(string shoppingCartId)
+        public async Task<ShoppingCart> GetShoppingCartById(string shoppingCartId)
         {
-            return _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
+            return await _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
         }
-
-
     }
 }

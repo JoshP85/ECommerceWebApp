@@ -13,19 +13,20 @@ namespace ECommerceWebApp.Services
             _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
         }
 
-        public ShoppingItem GetItemFromCartByProductId(string productId, ShoppingCart shoppingCart)
+        public async Task<ShoppingItem> AddShoppingItem(Product product, ShoppingCart shoppingCart)
         {
-            return shoppingCart.CartItems.
-            Where(i => i.ProductId == productId).FirstOrDefault();
-        }
+            ShoppingItem shoppingItem =
+                GetItemFromCartByProductId(product.ProductId, shoppingCart);
 
-        public bool UpdateShoppingItem(ShoppingItem shoppingItem)
-        {
-            shoppingItem.Quantity += 1;
-            shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
-
-            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
-            return true;
+            if (shoppingItem != null)
+            {
+                UpdateQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: 1);
+                return null;
+            }
+            else
+            {
+                return await CreateShoppingItem(product, shoppingCart);
+            }
         }
 
         public async Task<bool> RemoveShoppingItem(ShoppingItemDTO shoppingItemDTO)
@@ -44,11 +45,19 @@ namespace ECommerceWebApp.Services
                 return true;
             }
 
-            shoppingItem.Quantity -= 1;
-            shoppingItem.ShoppingItemTotalPrice -= shoppingItemDTO.ProductPrice;
+            UpdateQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
 
             _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
 
+            return true;
+        }
+
+        public bool UpdateQuantityAndTotalPrice(ShoppingItem shoppingItem, int adjustQuantityBy)
+        {
+            shoppingItem.Quantity += adjustQuantityBy;
+            shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
+
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
             return true;
         }
 
@@ -61,17 +70,15 @@ namespace ECommerceWebApp.Services
             return newShoppingItem;
         }
 
-        // Not needed
-        public decimal GetTotalCostOfCartItems(string cartId)
+        public ShoppingItem GetItemFromCartByProductId(string productId, ShoppingCart shoppingCart)
         {
-            return _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(cartId);
+            return shoppingCart.CartItems.
+            Where(i => i.ProductId == productId).FirstOrDefault();
         }
 
         public async Task<ShoppingItem> GetShoppingItemById(string Id)
         {
             return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetByIdAsync(Id);
         }
-
-
     }
 }

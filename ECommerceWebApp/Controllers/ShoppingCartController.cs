@@ -21,7 +21,7 @@ namespace ECommerceWebApp.Controllers
             _productService = productService;
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
             if (ShoppingCartId == null)
             {
@@ -30,23 +30,20 @@ namespace ECommerceWebApp.Controllers
 
             ShoppingCartViewModel scvm = new()
             {
-                ShoppingCart = _shoppingCartService.GetShoppingCartById(ShoppingCartId),
+                ShoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId),
             };
 
             return View(scvm);
         }
 
-        public async Task<IActionResult> AddToCart(string productId, decimal productPrice)
+        public async Task<IActionResult> AddToCart(ShoppingItemDTO shoppingItem)
         {
             if (ModelState.IsValid)
             {
-                ShoppingItemDTO updateData = new ShoppingItemDTO()
-                {
-                    ProductId = productId,
+                shoppingItem.ShoppingCartId = ShoppingCartId;
 
-                };
+                var result = await _shoppingCartService.AddToCart(shoppingItem);
 
-                var result = await _shoppingCartService.AddToCart(ShoppingCartId, productId);
                 //TODO: Add error messages
                 if (result is true)
                 {
