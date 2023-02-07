@@ -41,14 +41,31 @@ namespace ECommerceWebApp.Services
             return true;
         }
 
+        /*        public async Task<bool> UpdateCartItems(ShoppingItemDTO shoppingItemDTO)
+                {
+                    ShoppingCart shoppingCart =
+                            await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
+
+                    if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
+                    {
+                        UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
+
+                        await _unitOfWorkShoppingCart.SaveChangesAsync();
+
+                        return true;
+                    }
+                    return false;
+                }*/
         public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingCart shoppingCart =
                     await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
+            int shoppingCartQuantity = await _shoppingItemService.DeleteShoppingItem(shoppingItemDTO);
+
+            if (shoppingCartQuantity != 0)
             {
-                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
+                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice * shoppingCartQuantity);
 
                 await _unitOfWorkShoppingCart.SaveChangesAsync();
 

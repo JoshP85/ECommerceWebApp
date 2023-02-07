@@ -80,5 +80,15 @@ namespace ECommerceWebApp.Controllers
 
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
+
+        /*        [HttpPost]
+                public async Task<IActionResult> UpdateShoppingCartItem(ShoppingItemDTO shoppingItemDTO)
+                {
+
+
+
+
+                    return RedirectToAction("ShoppingCart", "ShoppingCart");
+                }*/
     }
 }

@@ -48,7 +48,8 @@
             <tr>
                 <td>@shoppingItem.Product.ProductId</td>
                 <td>@shoppingItem.Product.Name</td>
-                <td>@shoppingItem.Quantity</td>
+                @*<td>@shoppingItem.Quantity</td>*@
+                <td><input type="text" name="Quantity" value="@shoppingItem.Quantity" style="max-width:2em" /></td>
                 <td>@shoppingItem.Product.Price</td>
                 <td>@shoppingItem.ShoppingItemTotalPrice</td>
                 <td>

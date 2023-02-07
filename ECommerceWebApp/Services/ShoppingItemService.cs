@@ -80,5 +80,16 @@ namespace ECommerceWebApp.Services
         {
             return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetByIdAsync(Id);
         }
+
+
+        public async Task<int> DeleteShoppingItem(ShoppingItemDTO shoppingItemDTO)
+        {
+            ShoppingItem shoppingItem =
+                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
+
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
+
+            return shoppingItem.Quantity;
+        }
     }
 }
