@@ -40,32 +40,15 @@ namespace ECommerceWebApp.Services
 
             return true;
         }
-
-        /*        public async Task<bool> UpdateCartItems(ShoppingItemDTO shoppingItemDTO)
-                {
-                    ShoppingCart shoppingCart =
-                            await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
-
-                    if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
-                    {
-                        UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
-
-                        await _unitOfWorkShoppingCart.SaveChangesAsync();
-
-                        return true;
-                    }
-                    return false;
-                }*/
-        public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
+        // trying to work out how to update total price in shopping cart
+        public async Task<bool> UpdateCartItems(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingCart shoppingCart =
                     await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            int shoppingCartQuantity = await _shoppingItemService.DeleteShoppingItem(shoppingItemDTO);
-
-            if (shoppingCartQuantity != 0)
+            if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
             {
-                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice * shoppingCartQuantity);
+                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
 
                 await _unitOfWorkShoppingCart.SaveChangesAsync();
 
@@ -73,10 +56,26 @@ namespace ECommerceWebApp.Services
             }
             return false;
         }
-
-        public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal productPrice)
+        public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
-            shoppingCart.ShoppingCartTotalPrice += productPrice;
+            ShoppingCart shoppingCart =
+                    await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
+
+            ShoppingItem shoppingItem =
+                await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
+
+            _shoppingItemService.DeleteShoppingItem(shoppingItem);
+
+            UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice * shoppingItem.Quantity);
+
+            await _unitOfWorkShoppingCart.SaveChangesAsync();
+
+            return true;
+        }
+
+        public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal updatedPriceOfItem)
+        {
+            shoppingCart.ShoppingCartTotalPrice += updatedPriceOfItem;
 
             _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
         }

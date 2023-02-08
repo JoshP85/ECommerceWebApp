@@ -29,6 +29,10 @@ namespace ECommerceWebApp.Services
             }
         }
 
+
+
+
+
         public async Task<bool> RemoveShoppingItemFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingItem shoppingItem =
@@ -51,6 +55,11 @@ namespace ECommerceWebApp.Services
 
             return true;
         }
+
+
+
+
+
 
         public bool UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int adjustQuantityBy)
         {
@@ -82,14 +91,14 @@ namespace ECommerceWebApp.Services
         }
 
 
-        public async Task<int> DeleteShoppingItem(ShoppingItemDTO shoppingItemDTO)
+        public void DeleteShoppingItem(ShoppingItem shoppingItem)
         {
-            ShoppingItem shoppingItem =
-                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
-
             _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
+        }
 
-            return shoppingItem.Quantity;
+        public async Task<decimal> getTotalCostOfCartitems(string shoppingCartId)
+        {
+            return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(shoppingCartId);
         }
     }
 }

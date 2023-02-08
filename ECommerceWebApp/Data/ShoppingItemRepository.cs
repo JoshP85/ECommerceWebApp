@@ -13,10 +13,10 @@ namespace ECommerceWebApp.Data
         }
 
         //Not needed
-        public decimal GetTotalCostOfCartItems(string shoppingCartId) =>
-            _context.ShoppingItems.
+        public async Task<decimal> GetTotalCostOfCartItems(string shoppingCartId) =>
+            await _context.ShoppingItems.
             Where(i => i.ShoppingCartId == shoppingCartId).
-            Sum(x => x.ShoppingItemTotalPrice);
+            SumAsync(x => x.ShoppingItemTotalPrice);
 
         public bool IsProductAlreadyInCart(string productId, string shoppingCartId) =>
             _context.ShoppingItems.

@@ -81,14 +81,27 @@ namespace ECommerceWebApp.Controllers
             return RedirectToAction("ShoppingCart", "ShoppingCart");
         }
 
-        /*        [HttpPost]
-                public async Task<IActionResult> UpdateShoppingCartItem(ShoppingItemDTO shoppingItemDTO)
+        [HttpPost]
+        public async Task<IActionResult> UpdateShoppingCartItem(ShoppingItemDTO shoppingItemDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _shoppingCartService.UpdateCartItems(shoppingItemDTO);
+
+                //TODO: Add error messages
+                if (result is true)
+                {
+                    return RedirectToAction("ShoppingCart", "ShoppingCart");
+                }
+                else
                 {
 
-
-
-
                     return RedirectToAction("ShoppingCart", "ShoppingCart");
-                }*/
+                }
+            }
+            return RedirectToAction("ShoppingCart", "ShoppingCart");
+        }
+
     }
 }
+
