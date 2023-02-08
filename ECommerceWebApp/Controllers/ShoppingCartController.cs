@@ -82,11 +82,11 @@ namespace ECommerceWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateShoppingCartItem(ShoppingItemDTO shoppingItemDTO)
+        public async Task<IActionResult> UpdateCartItem(ShoppingItemDTO shoppingItemDTO)
         {
             if (ModelState.IsValid)
             {
-                var result = await _shoppingCartService.UpdateCartItems(shoppingItemDTO);
+                var result = await _shoppingCartService.UpdateCartItem(shoppingItemDTO);
 
                 //TODO: Add error messages
                 if (result is true)

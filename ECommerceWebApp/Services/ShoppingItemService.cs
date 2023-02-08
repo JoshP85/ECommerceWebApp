@@ -1,5 +1,4 @@
 ﻿using ECommerceWebApp.Data.Interfaces;
-using ECommerceWebApp.DTOs;
 using ECommerceWebApp.Models;
 
 namespace ECommerceWebApp.Services
@@ -20,7 +19,7 @@ namespace ECommerceWebApp.Services
 
             if (shoppingItem != null)
             {
-                UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: 1);
+                UpdateItemQuantityAndTotalPrice(shoppingItem, Quantity: 1);
                 return null;
             }
             else
@@ -33,41 +32,13 @@ namespace ECommerceWebApp.Services
 
 
 
-        public async Task<bool> RemoveShoppingItemFromCart(ShoppingItemDTO shoppingItemDTO)
+        public void UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int Quantity)
         {
-            ShoppingItem shoppingItem =
-                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
+            shoppingItem.Quantity = Quantity;
 
-            if (shoppingItem == null)
-            {
-                return false;
-            }
-
-            if (shoppingItem.Quantity <= 1)
-            {
-                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
-                return true;
-            }
-
-            UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
-
-            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
-
-            return true;
-        }
-
-
-
-
-
-
-        public bool UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int adjustQuantityBy)
-        {
-            shoppingItem.Quantity += adjustQuantityBy;
             shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
 
             _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
-            return true;
         }
 
         public async Task<ShoppingItem> CreateShoppingItem(Product product, ShoppingCart shoppingCart)
@@ -102,3 +73,34 @@ namespace ECommerceWebApp.Services
         }
     }
 }
+
+
+
+
+
+
+
+/*        public async Task<bool> RemoveShoppingItemFromCart(ShoppingItemDTO shoppingItemDTO)
+        {
+            ShoppingItem shoppingItem =
+                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
+
+            if (shoppingItem == null)
+            {
+                return false;
+            }
+
+            if (shoppingItem.Quantity <= 1)
+            {
+                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
+                return true;
+            }
+
+            UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
+
+            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
+
+            return true;
+        }
+*/
+

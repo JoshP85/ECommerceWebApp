@@ -40,21 +40,44 @@ namespace ECommerceWebApp.Services
 
             return true;
         }
-        // trying to work out how to update total price in shopping cart
-        public async Task<bool> UpdateCartItems(ShoppingItemDTO shoppingItemDTO)
+
+        public async Task<bool> UpdateCartItem(ShoppingItemDTO shoppingItemDTO)
         {
+            if (shoppingItemDTO.NewQuantity == 0)
+            {
+                await RemoveFromCart(shoppingItemDTO);
+                return true;
+            }
+
+            /*            ShoppingItem shoppingItem =
+                                await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId);*/
+
+            if (shoppingItemDTO.NewQuantity == shoppingItemDTO.CurrentQuantity)
+            {
+                return true;
+            }
+
             ShoppingCart shoppingCart =
                     await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            if (await _shoppingItemService.RemoveShoppingItemFromCart(shoppingItemDTO))
+            if (shoppingItemDTO.NewQuantity > shoppingItemDTO.CurrentQuantity)
             {
-                UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice);
-
-                await _unitOfWorkShoppingCart.SaveChangesAsync();
-
-                return true;
+                decimal newprice = shoppingItemDTO.ProductPrice * (shoppingItemDTO.NewQuantity - shoppingItemDTO.CurrentQuantity);
+                UpdateShoppingCartTotalPrice(shoppingCart, newprice);
             }
-            return false;
+            else if (shoppingItemDTO.NewQuantity < shoppingItemDTO.CurrentQuantity)
+            {
+                decimal newprice = shoppingItemDTO.ProductPrice * (shoppingItemDTO.CurrentQuantity - shoppingItemDTO.NewQuantity);
+                UpdateShoppingCartTotalPrice(shoppingCart, -newprice);
+            }
+
+            _shoppingItemService.UpdateItemQuantityAndTotalPrice(await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId), shoppingItemDTO.NewQuantity);
+
+            _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
+
+            await _unitOfWorkShoppingCart.SaveChangesAsync();
+
+            return true;
         }
         public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {

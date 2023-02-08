@@ -49,7 +49,17 @@
                 <td>@shoppingItem.Product.ProductId</td>
                 <td>@shoppingItem.Product.Name</td>
                 @*<td>@shoppingItem.Quantity</td>*@
-                <td><input type="text" name="Quantity" value="@shoppingItem.Quantity" style="max-width:2em" /></td>
+                <form method="post" asp-controller="ShoppingCart" asp-action="UpdateCartItem">
+                    <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
+                    <input type="hidden" name="ShoppingItemId" value="@shoppingItem.ShoppingItemId" />
+                    <input type="hidden" name="ProductId" value="@shoppingItem.ProductId" />
+                    <input type="hidden" name="ProductPrice" value="@shoppingItem.Product.Price" />
+                    <input type="hidden" name="CurrentQuantity" value="@shoppingItem.Quantity" />
+                <td>
+                    <input type="number" min="0" name="NewQuantity" value="@shoppingItem.Quantity" style="max-width:3em" />
+                    <input type="submit" value="Update" />
+                </td>
+                </form>
                 <td>@shoppingItem.Product.Price</td>
                 <td>@shoppingItem.ShoppingItemTotalPrice</td>
                 <td>
