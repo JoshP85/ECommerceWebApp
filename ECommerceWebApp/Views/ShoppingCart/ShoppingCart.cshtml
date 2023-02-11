@@ -48,7 +48,6 @@
             <tr>
                 <td>@shoppingItem.Product.ProductId</td>
                 <td>@shoppingItem.Product.Name</td>
-                @*<td>@shoppingItem.Quantity</td>*@
                 <form method="post" asp-controller="ShoppingCart" asp-action="UpdateCartItem">
                     <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
                     <input type="hidden" name="ShoppingItemId" value="@shoppingItem.ShoppingItemId" />
