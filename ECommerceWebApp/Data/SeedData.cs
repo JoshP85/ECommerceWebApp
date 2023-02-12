@@ -18,7 +18,7 @@ namespace ECommerceWebApp.Data
             {
                 productCategories.Add(new ProductCategory()
                 {
-                    Id = category.Id,
+                    ProductCategoryId = category.Id,
                     Name = category.Name,
                     Description = category.Description,
                 });
@@ -30,7 +30,7 @@ namespace ECommerceWebApp.Data
             {
                 products.Add(new Product()
                 {
-                    Id = product.Id,
+                    ProductId = product.Id,
                     Name = product.Name,
                     Description = product.Description,
                     Price = product.Price,

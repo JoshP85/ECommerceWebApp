@@ -6,11 +6,12 @@
         IAuthRepository AuthRepository { get; }
         IProductRepository ProductRepository { get; }
         IProductCategoryRepository ProductCategoryRepository { get; }
+        IShoppingCartRepository ShoppingCartRepository { get; }
+        IShoppingItemRepository ShoppingItemRepository { get; }
         IRepository<T> Repository { get; }
 
-
-
-
         Task SaveChangesAsync();
+
+        void Dispose();
     }
 }

@@ -5,7 +5,7 @@ namespace ECommerceWebApp.Models
     public class Product
     {
         [Required]
-        public string Id { get; set; }
+        public string ProductId { get; set; }
 
         [Required]
         public string Name { get; set; }

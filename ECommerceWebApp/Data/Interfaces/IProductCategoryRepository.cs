@@ -4,6 +4,6 @@ namespace ECommerceWebApp.Data.Interfaces
 {
     public interface IProductCategoryRepository : IRepository<ProductCategory>
     {
-        public IEnumerable<ProductCategory> GetAllProducts();
+        public IEnumerable<ProductCategory> GetAllCategoriesWithProducts();
     }
 }

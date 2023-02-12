@@ -2,6 +2,7 @@
 using ECommerceWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceWebApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230122073023_shoppingcartv2")]
+    partial class shoppingcartv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +26,7 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
                 {
-                    b.Property<string>("AccountId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
@@ -46,34 +49,31 @@ namespace ECommerceWebApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("text");
 
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("text");
-
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.HasKey("AccountId");
+                    b.HasKey("Id");
 
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Auth", b =>
                 {
-                    b.Property<string>("AccountId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("AccountId");
+                    b.HasKey("Id");
 
                     b.ToTable("AuthItems");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Product", b =>
                 {
-                    b.Property<string>("ProductId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -97,7 +97,7 @@ namespace ECommerceWebApp.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductCategoryId");
 
@@ -106,7 +106,7 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.ProductCategory", b =>
                 {
-                    b.Property<string>("ProductCategoryId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -117,33 +117,32 @@ namespace ECommerceWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ProductCategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.ShoppingCart", b =>
                 {
-                    b.Property<string>("ShoppingCartId")
+                    b.Property<string>("CartId")
                         .HasColumnType("text");
 
                     b.Property<string>("AccountId")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("ShoppingCartTotalPrice")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.HasKey("ShoppingCartId");
+                    b.HasKey("CartId");
 
-                    b.HasIndex("AccountId")
-                        .IsUnique();
+                    b.HasIndex("AccountId");
 
                     b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.ShoppingItem", b =>
                 {
-                    b.Property<string>("ShoppingItemId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("ProductId")
@@ -155,10 +154,10 @@ namespace ECommerceWebApp.Migrations
                     b.Property<string>("ShoppingCartId")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("ShoppingItemTotalPrice")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.HasKey("ShoppingItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -181,8 +180,8 @@ namespace ECommerceWebApp.Migrations
             modelBuilder.Entity("ECommerceWebApp.Models.ShoppingCart", b =>
                 {
                     b.HasOne("ECommerceWebApp.Models.Account", "Account")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("ECommerceWebApp.Models.ShoppingCart", "AccountId");
+                        .WithMany()
+                        .HasForeignKey("AccountId");
 
                     b.Navigation("Account");
                 });
@@ -199,11 +198,6 @@ namespace ECommerceWebApp.Migrations
 
                     b.Navigation("Product");
 
-                    b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
-                {
                     b.Navigation("ShoppingCart");
                 });
 

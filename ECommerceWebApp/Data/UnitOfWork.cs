@@ -10,8 +10,13 @@ namespace ECommerceWebApp.Data
         private readonly IAuthRepository _authRepository;
         private readonly IProductRepository _productRepository;
         private readonly IProductCategoryRepository _productCategoryRepository;
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly IShoppingItemRepository _shoppingItemRepository;
 
-        public UnitOfWork(DatabaseContext context, IRepository<T> repository, IAccountRepository accountRepository, IAuthRepository authRepository, IProductRepository productRepository, IProductCategoryRepository productCategoryRepository)
+        public UnitOfWork(DatabaseContext context, IRepository<T> repository,
+            IAccountRepository accountRepository, IAuthRepository authRepository,
+            IProductRepository productRepository, IProductCategoryRepository productCategoryRepository,
+            IShoppingCartRepository shoppingCartRepository, IShoppingItemRepository shoppingItemRepository)
         {
             _context = context;
             _repository = repository;
@@ -19,6 +24,8 @@ namespace ECommerceWebApp.Data
             _authRepository = authRepository;
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
+            _shoppingCartRepository = shoppingCartRepository;
+            _shoppingItemRepository = shoppingItemRepository;
         }
 
         public IRepository<T> Repository => _repository;
@@ -26,10 +33,19 @@ namespace ECommerceWebApp.Data
         public IAuthRepository AuthRepository => _authRepository;
         public IProductRepository ProductRepository => _productRepository;
         public IProductCategoryRepository ProductCategoryRepository => _productCategoryRepository;
+        public IShoppingCartRepository ShoppingCartRepository => _shoppingCartRepository;
+        public IShoppingItemRepository ShoppingItemRepository => _shoppingItemRepository;
+
+
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
     }

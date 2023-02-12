@@ -13,7 +13,7 @@ namespace ECommerceWebApp.Data
             _context = context;
         }
 
-        public IEnumerable<ProductCategory> GetAllProducts() => _context.ProductCategories.Include(pc => pc.Products).ToList();
+        public IEnumerable<ProductCategory> GetAllCategoriesWithProducts() => _context.ProductCategories.Include(pc => pc.Products).ToList();
 
     }
 }

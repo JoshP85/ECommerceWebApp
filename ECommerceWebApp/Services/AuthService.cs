@@ -17,7 +17,7 @@ namespace ECommerceWebApp.Services
         {
             var auth = new Auth
             {
-                Id = id,
+                AccountId = id,
                 Password = password
             };
 

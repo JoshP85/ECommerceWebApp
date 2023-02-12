@@ -1,5 +1,4 @@
-﻿using ECommerceWebApp.Data.Interfaces;
-using ECommerceWebApp.Models;
+﻿using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +10,13 @@ namespace ECommerceWebApp.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly AuthService _authService;
-        private readonly IAccountRepository _accountRepository;
-
-        public AuthController(ILogger<HomeController> logger, AuthService authService, IAccountRepository accountRepository)
+        private readonly AccountService _accountService;
+        private string ShoppingCartId => HttpContext.Session.GetString(nameof(ShoppingCart.ShoppingCartId));
+        public AuthController(ILogger<HomeController> logger, AuthService authService, AccountService accountService)
         {
             _logger = logger;
             _authService = authService;
-            _accountRepository = accountRepository;
+            _accountService = accountService;
         }
 
         public IActionResult Login()
@@ -37,8 +36,9 @@ namespace ECommerceWebApp.Controllers
 
                     if (account != null)
                     {
-                        HttpContext.Session.SetString(nameof(Account.Id), account.Id);
+                        HttpContext.Session.SetString(nameof(Account.AccountId), account.AccountId);
                         HttpContext.Session.SetString(nameof(Account.FirstName), account.FirstName);
+                        HttpContext.Session.SetString(nameof(Account.ShoppingCartId), account.ShoppingCartId);
 
                         return RedirectToAction("Index", "Home");
                     }

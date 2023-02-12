@@ -1,0 +1,78 @@
+﻿@model ECommerceWebApp.ViewModels.ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Cart";
+}
+<div>
+    <h4>Shopping Cart</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingCart.ShoppingCartId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingCart.ShoppingCartId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingCart.Account.AccountId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingCart.Account.AccountId)
+        </dd>
+        <dt class="col-sm-2">
+            Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingCart.Account.FirstName)
+            @Html.DisplayFor(model => model.ShoppingCart.Account.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingCart.ShoppingCartTotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingCart.ShoppingCartTotalPrice)
+        </dd>
+    </dl>
+    <hr />
+
+    <table>
+        <tr>
+            <th>productId</th>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        @foreach (var shoppingItem in Model.ShoppingCart.CartItems)
+        {
+
+            <tr>
+                <td>@shoppingItem.Product.ProductId</td>
+                <td>@shoppingItem.Product.Name</td>
+                <form method="post" asp-controller="ShoppingCart" asp-action="UpdateCartItem">
+                    <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
+                    <input type="hidden" name="ShoppingItemId" value="@shoppingItem.ShoppingItemId" />
+                    <input type="hidden" name="ProductId" value="@shoppingItem.ProductId" />
+                    <input type="hidden" name="ProductPrice" value="@shoppingItem.Product.Price" />
+                    <input type="hidden" name="CurrentQuantity" value="@shoppingItem.Quantity" />
+                <td>
+                    <input type="number" min="0" name="NewQuantity" value="@shoppingItem.Quantity" style="max-width:3em" />
+                    <input type="submit" value="Update" />
+                </td>
+                </form>
+                <td>@shoppingItem.Product.Price</td>
+                <td>@shoppingItem.ShoppingItemTotalPrice</td>
+                <td>
+                    <form method="post" asp-controller="ShoppingCart" asp-action="RemoveFromCart">
+                        <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
+                        <input type="hidden" name="ShoppingItemId" value="@shoppingItem.ShoppingItemId" />
+                        <input type="hidden" name="ProductId" value="@shoppingItem.ProductId" />
+                        <input type="hidden" name="ProductPrice" value="@shoppingItem.Product.Price" />
+                        <input type="submit" value="Remove" />
+                    </form>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

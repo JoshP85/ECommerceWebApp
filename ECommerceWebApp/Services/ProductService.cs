@@ -11,5 +11,10 @@ namespace ECommerceWebApp.Services
         {
             _unitOfWork = unitOfWork;
         }
+
+        public async Task<Product> GetProductByIdAsync(string productId)
+        {
+            return await _unitOfWork.ProductRepository.GetByIdAsync(productId);
+        }
     }
 }
