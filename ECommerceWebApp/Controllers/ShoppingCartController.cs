@@ -12,13 +12,9 @@ namespace ECommerceWebApp.Controllers
         private string AccountId => HttpContext.Session.GetString(nameof(Account.AccountId));
 
         private readonly ShoppingCartService _shoppingCartService;
-        private readonly ShoppingItemService _shoppingItemService;
-        private readonly ProductService _productService;
-        public ShoppingCartController(ShoppingCartService shoppingCartService, ShoppingItemService shoppingItemService, ProductService productService)
+        public ShoppingCartController(ShoppingCartService shoppingCartService)
         {
             _shoppingCartService = shoppingCartService;
-            _shoppingItemService = shoppingItemService;
-            _productService = productService;
         }
 
         public async Task<IActionResult> ShoppingCart()
