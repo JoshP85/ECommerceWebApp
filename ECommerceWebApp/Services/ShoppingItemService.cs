@@ -28,10 +28,6 @@ namespace ECommerceWebApp.Services
             }
         }
 
-
-
-
-
         public void UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int Quantity)
         {
             shoppingItem.Quantity = Quantity;
@@ -73,34 +69,4 @@ namespace ECommerceWebApp.Services
         }
     }
 }
-
-
-
-
-
-
-
-/*        public async Task<bool> RemoveShoppingItemFromCart(ShoppingItemDTO shoppingItemDTO)
-        {
-            ShoppingItem shoppingItem =
-                await GetShoppingItemById(shoppingItemDTO.ShoppingItemId);
-
-            if (shoppingItem == null)
-            {
-                return false;
-            }
-
-            if (shoppingItem.Quantity <= 1)
-            {
-                _unitOfWorkShoppingItem.ShoppingItemRepository.Delete(shoppingItem);
-                return true;
-            }
-
-            UpdateItemQuantityAndTotalPrice(shoppingItem, adjustQuantityBy: -1);
-
-            _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
-
-            return true;
-        }
-*/
 

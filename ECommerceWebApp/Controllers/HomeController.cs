@@ -35,23 +35,23 @@ namespace ECommerceWebApp.Controllers
                 {
                     cartItems.Add(item.ProductId);
                 }
-                IndexViewModel indexVMNUll = new()
+                IndexViewModel indexVM = new()
                 {
                     Categories = _productCategoryService.GetAllCategoriesWithProducts(),
                     CartItems = cartItems,
                 };
 
 
-                return View(indexVMNUll);
+                return View(indexVM);
             }
 
-            IndexViewModel indexVM = new()
+            IndexViewModel indexVMNUll = new()
             {
                 Categories = _productCategoryService.GetAllCategoriesWithProducts(),
                 CartItems = null,
             };
 
-            return View(indexVM);
+            return View(indexVMNUll);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

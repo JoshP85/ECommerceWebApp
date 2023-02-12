@@ -49,9 +49,6 @@ namespace ECommerceWebApp.Services
                 return true;
             }
 
-            /*            ShoppingItem shoppingItem =
-                                await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId);*/
-
             if (shoppingItemDTO.NewQuantity == shoppingItemDTO.CurrentQuantity)
             {
                 return true;
