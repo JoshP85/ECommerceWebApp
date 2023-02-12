@@ -36,6 +36,8 @@ namespace ECommerceWebApp.Controllers
             return View(scvm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(ShoppingItemDTO shoppingItem)
         {
             if (ModelState.IsValid)
@@ -60,6 +62,7 @@ namespace ECommerceWebApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             if (ModelState.IsValid)
@@ -82,6 +85,7 @@ namespace ECommerceWebApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCartItem(ShoppingItemDTO shoppingItemDTO)
         {
             if (ModelState.IsValid)
