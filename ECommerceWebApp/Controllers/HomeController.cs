@@ -29,6 +29,10 @@ namespace ECommerceWebApp.Controllers
             {
                 ShoppingCart shoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId);
 
+                int shoppingCartCount = await _shoppingCartService.CountTotalItemsInCart(ShoppingCartId);
+
+                HttpContext.Session.SetInt32("CartItemCount", shoppingCartCount);
+
                 List<string> cartItems = new();
 
                 foreach (var item in shoppingCart.CartItems)

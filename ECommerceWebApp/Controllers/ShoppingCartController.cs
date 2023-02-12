@@ -28,6 +28,10 @@ namespace ECommerceWebApp.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            int shoppingCartCount = await _shoppingCartService.CountTotalItemsInCart(ShoppingCartId);
+
+            HttpContext.Session.SetInt32("CartItemCount", shoppingCartCount);
+
             ShoppingCartViewModel scvm = new()
             {
                 ShoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId),

@@ -104,5 +104,17 @@ namespace ECommerceWebApp.Services
         {
             return await _unitOfWorkShoppingCart.ShoppingCartRepository.GetShoppingCartById(shoppingCartId);
         }
+
+        public async Task<int> CountTotalItemsInCart(string shoppingCartId)
+        {
+            var shoppingCart = await GetShoppingCartById(shoppingCartId);
+
+            int shoppingCartCount = 0;
+            foreach (var item in shoppingCart.CartItems)
+            {
+                shoppingCartCount += item.Quantity;
+            }
+            return shoppingCartCount;
+        }
     }
 }
