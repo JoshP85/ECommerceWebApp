@@ -1,0 +1,120 @@
+﻿@model ECommerceWebApp.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "OrderSummery";
+}
+
+<h1>Order Summery</h1>
+
+<div>
+    <h4>Confirm Order</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.ShoppingCart.ShoppingCartId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.ShoppingCart.ShoppingCartId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.AccountId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.AccountId)
+        </dd>
+        <dt class="col-sm-2">
+            Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.FirstName)
+            @Html.DisplayFor(model => model.Account.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.ShoppingCart.ShoppingCartTotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.ShoppingCart.ShoppingCartTotalPrice)
+        </dd>
+    </dl>
+    <hr />
+
+    <table>
+        <tr>
+            <th>productId</th>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        @foreach (var shoppingItem in Model.Account.ShoppingCart.CartItems)
+        {
+
+            <tr>
+                <td>@shoppingItem.Product.ProductId</td>
+                <td>@shoppingItem.Product.Name</td>
+                <td>@shoppingItem.Quantity</td>
+                <td>@shoppingItem.Product.Price</td>
+                <td>@shoppingItem.ShoppingItemTotalPrice</td>
+            </tr>
+        }
+
+    </table>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Register">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.FirstName" class="control-label">First Name</label>
+                    <input asp-for="@Model.Account.FirstName" class="form-control" />
+                    <span asp-validation-for="@Model.Account.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.LastName" class="control-label">Last Name</label>
+                    <input asp-for="@Model.Account.LastName" class="form-control" />
+                    <span asp-validation-for="@Model.Account.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Email" class="control-label"></label>
+                    <input asp-for="@Model.Account.Email" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Email" class="text-danger"></span>
+                    @Html.ValidationMessage("EmailError", new {@class = "text-danger"})
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.AddressLine1" class="control-label">Address line 1</label>
+                    <input asp-for="@Model.Account.Address.AddressLine1" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.AddressLine1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.AddressLine2" class="control-label">Address line 2</label>
+                    <input asp-for="@Model.Account.Address.AddressLine2" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.AddressLine2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.City" class="control-label"></label>
+                    <input asp-for="@Model.Account.Address.City" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.State" class="control-label"></label>
+                    <input asp-for="@Model.Account.Address.State" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.PostalCode" class="control-label">Postal Code</label>
+                    <input asp-for="@Model.Account.Address.PostalCode" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.PostalCode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.Account.Address.Country" class="control-label"></label>
+                    <input asp-for="@Model.Account.Address.Country" class="form-control" />
+                    <span asp-validation-for="@Model.Account.Address.Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Continue" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

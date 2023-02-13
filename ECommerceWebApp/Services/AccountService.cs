@@ -13,6 +13,11 @@ namespace ECommerceWebApp.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<Account> GetAccountById(string accountId)
+        {
+            return await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+        }
+
         public async Task<Account> CreateAccount(RegisterViewModel newAccount)
         {
             var newUserAccount = new Account
