@@ -49,6 +49,20 @@ namespace ECommerceWebApp.Services
             return await _unitOfWork.AccountRepository.IsEmailInUseAsync(email);
         }
 
+        public void UpdateOrderHistory(Account account, Order order)
+        {
+            if (account.OrderHistory == null)
+            {
+                account.OrderHistory = new List<Order>();
+            }
+
+            account.OrderHistory.Add(order);
+            _unitOfWork.OrderRepository.AddAsync(order);
+            _unitOfWork.AccountRepository.Update(account);
+
+            _unitOfWork.SaveChangesAsync();
+        }
+
         public async Task AddShoppingCartIdToAccount(string Id, string shoppingCartId)
         {
             Account account = await _unitOfWork.AccountRepository.GetByIdAsync(Id);
@@ -56,6 +70,11 @@ namespace ECommerceWebApp.Services
 
             _unitOfWork.AccountRepository.Update(account);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Account> GetAllAccountData(string accountId)
+        {
+            return await _unitOfWork.AccountRepository.GetAllAccountData(accountId);
         }
     }
 }

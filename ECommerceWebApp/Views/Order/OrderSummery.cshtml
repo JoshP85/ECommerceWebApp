@@ -29,6 +29,12 @@
             @Html.DisplayFor(model => model.Account.LastName)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Email)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.ShoppingCart.ShoppingCartTotalPrice)
         </dt>
         <dd class="col-sm-10">
@@ -62,7 +68,7 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Register">
+            <form asp-action="FinaliseOrder">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="@Model.Account.FirstName" class="control-label">First Name</label>
@@ -111,8 +117,29 @@
                     <input asp-for="@Model.Account.Address.Country" class="form-control" />
                     <span asp-validation-for="@Model.Account.Address.Country" class="text-danger"></span>
                 </div>
+                <h2>Payment</h2>
                 <div class="form-group">
-                    <input type="submit" value="Continue" class="btn btn-primary" />
+                    <label class="control-label">Name on card</label>
+                    <input class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Card Number</label>
+                    <input class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Expiry Date</label>
+                    <input class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">CVC</label>
+                    <input class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Confirm and Pay" class="btn btn-primary" />
                 </div>
             </form>
         </div>

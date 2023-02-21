@@ -16,6 +16,7 @@
                 <th>@category.Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Quantity</th>
             </tr>
             var products = category.Products.OrderBy(p => p.Name).ToList();
             @foreach (var product in products)
@@ -24,6 +25,7 @@
                     <td>@product.Name</td>
                     <td>@product.Description</td>
                     <td>@product.Price</td>
+                    <td>@product.Quantity</td>
 
                     @if (product.Quantity <= 0)
                     {

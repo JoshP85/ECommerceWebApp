@@ -45,5 +45,6 @@ namespace ECommerceWebApp.Models
         public virtual Address Address { get; set; }
         public string ShoppingCartId { get; set; }
         public virtual ShoppingCart ShoppingCart { get; set; }
+        public virtual ICollection<Order> OrderHistory { get; set; }
     }
 }

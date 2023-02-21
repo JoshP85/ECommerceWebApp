@@ -7,6 +7,8 @@ namespace ECommerceWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private string AccountId => HttpContext.Session.GetString(nameof(Account.AccountId));
+
         private readonly ILogger<HomeController> _logger;
         private readonly AccountService _accountService;
         private readonly AuthService _authService;
@@ -55,6 +57,12 @@ namespace ECommerceWebApp.Controllers
             }
 
             return View(newAccount);
+        }
+
+        public async Task<ActionResult> AccountDetails()
+        {
+            Account account = await _accountService.GetAllAccountData(AccountId);
+            return View(account);
         }
     }
 }

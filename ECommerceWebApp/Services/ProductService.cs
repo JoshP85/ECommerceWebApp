@@ -16,5 +16,16 @@ namespace ECommerceWebApp.Services
         {
             return await _unitOfWork.ProductRepository.GetByIdAsync(productId);
         }
+
+        public void UpdateProductQuantity(ShoppingCart shoppingCart)
+        {
+            foreach (var item in shoppingCart.CartItems)
+            {
+                item.Product.Quantity -= item.Quantity;
+                _unitOfWork.ProductRepository.Update(item.Product);
+            }
+
+            _unitOfWork.SaveChangesAsync();
+        }
     }
 }

@@ -8,6 +8,7 @@
         IProductCategoryRepository ProductCategoryRepository { get; }
         IShoppingCartRepository ShoppingCartRepository { get; }
         IShoppingItemRepository ShoppingItemRepository { get; }
+        IOrderRepository OrderRepository { get; }
         IRepository<T> Repository { get; }
 
         Task SaveChangesAsync();

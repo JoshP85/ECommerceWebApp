@@ -1,4 +1,5 @@
-﻿using ECommerceWebApp.Models;
+﻿using ECommerceWebApp.DTOs;
+using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace ECommerceWebApp.Controllers
 
         private readonly ShoppingCartService _shoppingCartService;
         private readonly AccountService _accountService;
-        public OrderController(ShoppingCartService shoppingCartService, AccountService accountService)
+        private readonly ProductService _productService;
+        public OrderController(ShoppingCartService shoppingCartService, AccountService accountService, ProductService productService)
         {
             _shoppingCartService = shoppingCartService;
             _accountService = accountService;
+            _productService = productService;
         }
 
         public async Task<IActionResult> OrderSummery()
@@ -26,6 +29,48 @@ namespace ECommerceWebApp.Controllers
                 Account = await _accountService.GetAccountById(AccountId),
             };
             return View(ovm);
+        }
+
+        public async Task<IActionResult> FinaliseOrder(OrderDTO orderDTO)
+        {
+            ShoppingCart shoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId);
+
+            Account account = await _accountService.GetAccountById(AccountId);
+
+            Address address = new()
+            {
+                Account = account,
+                AccountId = AccountId,
+                AddressLine1 = orderDTO.AddressLine1,
+                AddressLine2 = orderDTO.AddressLine2,
+                City = orderDTO.City,
+                State = orderDTO.State,
+                PostalCode = orderDTO.PostalCode,
+                Country = orderDTO.Country,
+
+
+            };
+            Order order = new()
+            {
+                Account = account,
+                OrderId = Guid.NewGuid().ToString(),
+                AccountId = AccountId,
+                ShippingAddress = address,
+                OrderItems = shoppingCart.CartItems,
+                OrderDate = DateTime.Now,
+                TotalPrice = shoppingCart.ShoppingCartTotalPrice
+
+            };
+
+            _productService.UpdateProductQuantity(shoppingCart);
+
+            _accountService.UpdateOrderHistory(account, order);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult OrderComplete()
+        {
+            return View();
         }
     }
 }
