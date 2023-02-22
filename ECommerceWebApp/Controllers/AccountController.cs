@@ -13,13 +13,15 @@ namespace ECommerceWebApp.Controllers
         private readonly AccountService _accountService;
         private readonly AuthService _authService;
         private readonly ShoppingCartService _shoppingCartService;
+        private readonly OrderService _orderService;
 
-        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService, ShoppingCartService shoppingCartService)
+        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService, ShoppingCartService shoppingCartService, OrderService orderService)
         {
             _logger = logger;
             _accountService = accountService;
             _authService = authService;
             _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
         }
 
         public IActionResult Register()
@@ -61,8 +63,13 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<ActionResult> AccountDetails()
         {
-            Account account = await _accountService.GetAllAccountData(AccountId);
-            return View(account);
+            AccountDetailsViewModel advm = new()
+            {
+                Account = await _accountService.GetAllAccountData(AccountId),
+                OrderHistory = await _orderService.GetAllByAccountId(AccountId),
+            };
+            return View(advm);
+            
         }
     }
 }

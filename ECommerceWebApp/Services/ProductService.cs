@@ -25,7 +25,7 @@ namespace ECommerceWebApp.Services
                 _unitOfWork.ProductRepository.Update(item.Product);
             }
 
-            _unitOfWork.SaveChangesAsync();
+            
         }
     }
 }

@@ -39,8 +39,7 @@ namespace ECommerceWebApp.Controllers
 
             Address address = new()
             {
-                Account = account,
-                AccountId = AccountId,
+                AddressId = Guid.NewGuid().ToString(),
                 AddressLine1 = orderDTO.AddressLine1,
                 AddressLine2 = orderDTO.AddressLine2,
                 City = orderDTO.City,
@@ -56,15 +55,16 @@ namespace ECommerceWebApp.Controllers
                 OrderId = Guid.NewGuid().ToString(),
                 AccountId = AccountId,
                 ShippingAddress = address,
+                AddressId = address.AddressId,
                 OrderItems = shoppingCart.CartItems,
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.Now.ToString(),
                 TotalPrice = shoppingCart.ShoppingCartTotalPrice
 
             };
 
             _productService.UpdateProductQuantity(shoppingCart);
 
-            _accountService.UpdateOrderHistory(account, order);
+            await _accountService.UpdateOrderHistory(account, order);
             return RedirectToAction("Index", "Home");
         }
 

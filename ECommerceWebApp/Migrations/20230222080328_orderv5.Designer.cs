@@ -2,6 +2,7 @@
 using ECommerceWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceWebApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230222080328_orderv5")]
+    partial class orderv5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,14 +57,15 @@ namespace ECommerceWebApp.Migrations
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Address", b =>
                 {
                     b.Property<string>("AddressId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountId")
                         .HasColumnType("text");
 
                     b.Property<string>("AddressLine1")
@@ -83,6 +87,9 @@ namespace ECommerceWebApp.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("AddressId");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("Addresses");
                 });
@@ -228,13 +235,13 @@ namespace ECommerceWebApp.Migrations
                     b.ToTable("ShoppingItems");
                 });
 
-            modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
+            modelBuilder.Entity("ECommerceWebApp.Models.Address", b =>
                 {
-                    b.HasOne("ECommerceWebApp.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
+                    b.HasOne("ECommerceWebApp.Models.Account", "Account")
+                        .WithOne("Address")
+                        .HasForeignKey("ECommerceWebApp.Models.Address", "AccountId");
 
-                    b.Navigation("Address");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Order", b =>
@@ -293,6 +300,8 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
                 {
+                    b.Navigation("Address");
+
                     b.Navigation("OrderHistory");
 
                     b.Navigation("ShoppingCart");

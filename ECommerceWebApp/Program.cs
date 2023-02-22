@@ -23,7 +23,7 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ProductCategoryService>();
 builder.Services.AddScoped<ShoppingCartService>();
 builder.Services.AddScoped<ShoppingItemService>();
-//builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<OrderService>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();

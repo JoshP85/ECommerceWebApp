@@ -28,10 +28,10 @@ namespace ECommerceWebApp.Data
             return await _context.Accounts.AnyAsync(_account => _account.AccountId == id);
         }
 
-        public async Task<Account> GetAllAccountData(string accountId) =>
+        public async Task<IEnumerable<Account>> GetAllAccountData(string accountId) =>
             await _context.Accounts
             .Where(a => a.AccountId == accountId)
-            .Include(a => a.ShoppingCart)
-            .Include(a => a.OrderHistory).ThenInclude(o => o.OrderItems).FirstOrDefaultAsync();
+/*            .Include(x => x.Address)*/
+            .Include(a => a.OrderHistory).ThenInclude(o => o.OrderItems).ToListAsync();
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ECommerceWebApp.Models.Account
+﻿@model ECommerceWebApp.ViewModels.AccountDetailsViewModel
 
 @{
     ViewData["Title"] = "AccountDetails";
@@ -11,46 +11,46 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Account.Type)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Type)
+            @Html.DisplayFor(model => model.Account.Type)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Account.FirstName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.Account.FirstName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Account.LastName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Account.LastName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Account.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.Account.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.Account.Phone)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
+            @Html.DisplayFor(model => model.Account.Phone)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressId)
+            @Html.DisplayNameFor(model => model.Account.AddressId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AddressId)
+            @Html.DisplayFor(model => model.Account.AddressId)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ShoppingCartId)
+            @Html.DisplayNameFor(model => model.Account.ShoppingCartId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ShoppingCartId)
+            @Html.DisplayFor(model => model.Account.ShoppingCartId)
         </dd>
     </dl>
 </div>
@@ -62,33 +62,35 @@
         <th>Order Id</th>
         <th>Account Id</th>
         <th>Address</th>
-        <th>Order Items</th>
         <th>Order Date</th>
         <th>Total Price</th>
     </tr>
-    @if(Model.OrderHistory != null)
+    @if (Model.OrderHistory != null)
     {
         @foreach (var order in Model.OrderHistory)
         {
             <tr>
-                @order.OrderId
-                @order.AccountId
-                @order.ShippingAddress.AddressLine1
-                @foreach (var item in order.OrderItems)
+                <td>@order.OrderId</td>
+                <td>@order.AccountId</td>
+@*                @if (order.ShippingAddress.AddressLine1 != null)
                 {
-                    @item.Product.Name
-                    @item.Product.Quantity
-                    @item.ShoppingItemTotalPrice
-                }
-                @order.OrderDate
-                @order.TotalPrice
+                    <td>@order.ShippingAddress.AddressLine1</td>
+                }*@
+
+                <td>@order.OrderDate</td>
+                <td>@order.TotalPrice</td>
+            </tr>
+            @foreach (var item in order.OrderItems)
+            {
+                <tr>
+                    <td>@*@item.Product.Name*@</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ShoppingItemTotalPrice</td>
+                </tr>
+            }
+            <tr>
+                <td><hr /></td>
             </tr>
         }
     }
-
 </table>
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.AccountId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
