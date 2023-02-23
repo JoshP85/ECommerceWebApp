@@ -1,5 +1,4 @@
 ﻿using ECommerceWebApp.Models;
-using System.Security.Policy;
 
 namespace ECommerceWebApp.DTOs
 {
@@ -11,6 +10,9 @@ namespace ECommerceWebApp.DTOs
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-
+        public Account Account { get; set; }
+        public string AccountId { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
+        public string ShoppingCartId { get; set; }
     }
 }

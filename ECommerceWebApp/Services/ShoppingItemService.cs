@@ -68,9 +68,9 @@ namespace ECommerceWebApp.Services
             return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(shoppingCartId);
         }
 
-        public void ConvertShoppingItemToOrder(Order order, ShoppingCart shoppingCart)
+        public void ConvertShoppingItemToOrder(Order order)
         {
-            foreach (var shoppingItem in shoppingCart.CartItems)
+            foreach (var shoppingItem in order.OrderItems)
             {
                 shoppingItem.Order = order;
                 shoppingItem.OrderId = order.OrderId;

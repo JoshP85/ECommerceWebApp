@@ -51,18 +51,18 @@ namespace ECommerceWebApp.Services
             return await _unitOfWork.AccountRepository.IsEmailInUseAsync(email);
         }
 
-        public async Task UpdateOrderHistory(Account account, Order order)
+        public async Task UpdateOrderHistory(Order order)
         {
-            if (account.CompletedOrders == null)
+            if (order.Account.CompletedOrders == null)
             {
-                account.CompletedOrders = new List<Order>();
+                order.Account.CompletedOrders = new List<Order>();
             }
 
-            account.CompletedOrders.Add(order);
-            await _unitOfWorkOrder.OrderRepository.AddAsync(order);
-            _unitOfWork.AccountRepository.Update(account);
+            order.Account.CompletedOrders.Add(order);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWorkOrder.OrderRepository.AddAsync(order);
+
+            _unitOfWork.AccountRepository.Update(order.Account);
         }
 
         public async Task AddShoppingCartIdToAccount(string Id, string shoppingCartId)

@@ -31,29 +31,30 @@
                     {
                         <td>Sold out</td>
                     }
-                    @if(Model.CartItems != null)
+                    else
                     {
-                        @if (Model.CartItems.Contains(product.ProductId))
+                        @if (Model.CartItems != null)
                         {
-
-                            <td>
-                                <form method="post" asp-controller="ShoppingCart" asp-action="ShoppingCart">
-                                    <input type="submit" value="In Cart" />
-                                </form>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
-                                    <input type="hidden" name="ProductId" value="@product.ProductId" />
-                                    <input type="hidden" name="ProductPrice" value="@product.Price" />
-                                    <input type="submit" value="Add to Cart" />
-                                </form>
-                            </td>
+                            @if (Model.CartItems.Contains(product.ProductId))
+                            {
+                                <td>
+                                    <form method="post" asp-controller="ShoppingCart" asp-action="ShoppingCart">
+                                        <input type="submit" value="In Cart" />
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
+                                        <input type="hidden" name="ProductId" value="@product.ProductId" />
+                                        <input type="hidden" name="ProductPrice" value="@product.Price" />
+                                        <input type="submit" value="Add to Cart" />
+                                    </form>
+                                </td>
+                            }
                         }
                     }
-
                 </tr>
             }
         }

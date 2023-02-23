@@ -17,15 +17,15 @@ namespace ECommerceWebApp.Services
             return await _unitOfWork.ProductRepository.GetByIdAsync(productId);
         }
 
-        public void UpdateProductQuantity(ShoppingCart shoppingCart)
+        public void UpdateProductQuantity(Order order)
         {
-            foreach (var item in shoppingCart.CartItems)
+            foreach (var item in order.OrderItems)
             {
                 item.Product.Quantity -= item.Quantity;
                 _unitOfWork.ProductRepository.Update(item.Product);
             }
 
-            
+
         }
     }
 }

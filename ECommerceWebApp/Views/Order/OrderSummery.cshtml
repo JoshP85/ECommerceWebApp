@@ -117,6 +117,8 @@
                     <input asp-for="@Model.Account.Address.Country" class="form-control" />
                     <span asp-validation-for="@Model.Account.Address.Country" class="text-danger"></span>
                 </div>
+                <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
+                <input type="hidden" name="AccountId" value="@Model.Account.AccountId" />
                 <h2>Payment</h2>
                 <div class="form-group">
                     <label class="control-label">Name on card</label>

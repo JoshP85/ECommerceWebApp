@@ -4,10 +4,9 @@
     ViewData["Title"] = "AccountDetails";
 }
 
-<h1>AccountDetails</h1>
+<h1>Account Details</h1>
 
 <div>
-    <h4>Account</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -55,42 +54,62 @@
     </dl>
 </div>
 
-
-
-<table>
-    <tr>
-        <th>Order Id</th>
-        <th>Account Id</th>
-        <th>Address</th>
-        <th>Order Date</th>
-        <th>Total Price</th>
-    </tr>
+<h4>Order History</h4>
+<div>
     @if (Model.OrderHistory != null)
     {
         @foreach (var order in Model.OrderHistory)
         {
-            <tr>
-                <td>@order.OrderId</td>
-                <td>@order.AccountId</td>
-@*                @if (order.ShippingAddress.AddressLine1 != null)
-                {
-                    <td>@order.ShippingAddress.AddressLine1</td>
-                }*@
-
-                <td>@order.OrderDate</td>
-                <td>@order.TotalPrice</td>
-            </tr>
-            @foreach (var item in order.OrderItems)
-            {
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Order Id
+                </dt>
+                <dd class="col-sm-10">
+                    @order.OrderId
+                </dd>
+                <dt class="col-sm-2">
+                    Account Id
+                </dt>
+                <dd class="col-sm-10">
+                    @order.AccountId
+                </dd>
+                <dt class="col-sm-2">
+                    Order Date
+                </dt>
+                <dd class="col-sm-10">
+                    @order.OrderDate
+                </dd>
+                <dt class="col-sm-2">
+                    Total Price
+                </dt>
+                <dd class="col-sm-10">
+                    @order.TotalPrice
+                </dd>
+                <dt class="col-sm-2">
+                    Order Date
+                </dt>
+                <dd class="col-sm-10">
+                    @order.OrderDate
+                </dd>
+            </dl>
+            <table>
                 <tr>
-                    <td>@*@item.Product.Name*@</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.ShoppingItemTotalPrice</td>
+                    @*<th>Product</th>*@
+                    <th>Quantity</th>
+                    <th>Product Total</th>
                 </tr>
-            }
-            <tr>
-                <td><hr /></td>
-            </tr>
+                @foreach (var item in order.OrderItems)
+                {
+
+                    <tr>
+                        @*<td>item.Product.Name</td>*@
+                        <td>@item.Quantity</td>
+                        <td>@item.ShoppingItemTotalPrice</td>
+                    </tr>
+
+                }
+            </table>
         }
     }
-</table>
+</div>
