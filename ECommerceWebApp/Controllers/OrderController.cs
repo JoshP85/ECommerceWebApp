@@ -11,14 +11,16 @@ namespace ECommerceWebApp.Controllers
         private string AccountId => HttpContext.Session.GetString(nameof(Account.AccountId));
         private string ShoppingCartId => HttpContext.Session.GetString(nameof(Account.ShoppingCartId));
 
+        private readonly OrderService _orderService;
         private readonly ShoppingCartService _shoppingCartService;
         private readonly AccountService _accountService;
         private readonly ProductService _productService;
-        public OrderController(ShoppingCartService shoppingCartService, AccountService accountService, ProductService productService)
+        public OrderController(OrderService orderService, ShoppingCartService shoppingCartService, AccountService accountService, ProductService productService)
         {
             _shoppingCartService = shoppingCartService;
             _accountService = accountService;
             _productService = productService;
+            _orderService = orderService;
         }
 
         public async Task<IActionResult> OrderSummery()
@@ -61,6 +63,8 @@ namespace ECommerceWebApp.Controllers
                 TotalPrice = shoppingCart.ShoppingCartTotalPrice
 
             };
+
+            _orderService.ConvertShoppingItemToOrder(order, shoppingCart);
 
             _productService.UpdateProductQuantity(shoppingCart);
 

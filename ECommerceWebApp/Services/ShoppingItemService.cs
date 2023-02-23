@@ -67,6 +67,19 @@ namespace ECommerceWebApp.Services
         {
             return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(shoppingCartId);
         }
+
+        public void ConvertShoppingItemToOrder(Order order, ShoppingCart shoppingCart)
+        {
+            foreach (var shoppingItem in shoppingCart.CartItems)
+            {
+                shoppingItem.Order = order;
+                shoppingItem.OrderId = order.OrderId;
+                shoppingItem.ShoppingCartId = null;
+                shoppingItem.ShoppingCart = null;
+
+                _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
+            }
+        }
     }
 }
 
