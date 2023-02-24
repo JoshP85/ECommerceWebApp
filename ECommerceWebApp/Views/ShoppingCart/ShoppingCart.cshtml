@@ -44,7 +44,6 @@
         </tr>
         @foreach (var shoppingItem in Model.ShoppingCart.CartItems)
         {
-
             <tr>
                 <td>@shoppingItem.Product.ProductId</td>
                 <td>@shoppingItem.Product.Name</td>
@@ -72,8 +71,8 @@
                 </td>
             </tr>
         }
-
     </table>
+
     <form method="post" asp-controller="Order" asp-action="OrderSummery">
         <input type="submit" value="Checkout" />
     </form>

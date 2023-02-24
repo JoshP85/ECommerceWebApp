@@ -18,6 +18,5 @@ namespace ECommerceWebApp.Data
             .Include(sc => sc.Account)
             .Include(sc => sc.CartItems)
             .ThenInclude(ci => ci.Product).FirstOrDefaultAsync();
-
     }
 }

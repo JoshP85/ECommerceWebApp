@@ -14,7 +14,7 @@ namespace ECommerceWebApp.Data
 
         public async Task<IEnumerable<Order>> GetAllByAccountId(string accountId) =>
             await _context.Orders
-                .Where(o => o.AccountId == accountId).Include(o => o.OrderItems).ToListAsync();
-        
+                .Where(o => o.AccountId == accountId).Include(o => o.OrderItems).ThenInclude(oi => oi.Product).ToListAsync();
+
     }
 }

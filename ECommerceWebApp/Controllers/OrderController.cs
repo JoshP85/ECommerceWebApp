@@ -22,7 +22,9 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> OrderSummery()
         {
-            return View(await _orderService.GetOrderSummery(ShoppingCartId, AccountId));
+            var orderSummery = await _orderService.GetOrderSummery(ShoppingCartId, AccountId);
+
+            return View(orderSummery);
         }
 
         public async Task<IActionResult> FinaliseOrder(OrderDTO orderDTO)

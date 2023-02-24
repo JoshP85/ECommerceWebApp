@@ -56,7 +56,7 @@
 
             <tr>
                 <td>@shoppingItem.Product.ProductId</td>
-                <td>@shoppingItem.Product.Name</td>
+                <td>@shoppingItem.OrderPrice</td>
                 <td>@shoppingItem.Quantity</td>
                 <td>@shoppingItem.Product.Price</td>
                 <td>@shoppingItem.ShoppingItemTotalPrice</td>
@@ -119,6 +119,7 @@
                 </div>
                 <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCart.ShoppingCartId" />
                 <input type="hidden" name="AccountId" value="@Model.Account.AccountId" />
+
                 <h2>Payment</h2>
                 <div class="form-group">
                     <label class="control-label">Name on card</label>

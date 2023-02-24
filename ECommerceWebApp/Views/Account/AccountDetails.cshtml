@@ -95,15 +95,17 @@
             </dl>
             <table>
                 <tr>
-                    @*<th>Product</th>*@
+                    <th>Product</th>
+                    <th>Price</th>
                     <th>Quantity</th>
-                    <th>Product Total</th>
+                    <th>Total</th>
                 </tr>
                 @foreach (var item in order.OrderItems)
                 {
 
                     <tr>
-                        @*<td>item.Product.Name</td>*@
+                        <td>@item.Product.Name</td>
+                        <td>@item.OrderPrice</td>
                         <td>@item.Quantity</td>
                         <td>@item.ShoppingItemTotalPrice</td>
                     </tr>

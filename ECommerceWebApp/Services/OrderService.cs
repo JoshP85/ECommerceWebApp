@@ -69,9 +69,20 @@ namespace ECommerceWebApp.Services
 
         public async Task<OrderViewModel> GetOrderSummery(string shoppingCartId, string accountId)
         {
+            var shoppingCart = await _shoppingCartService.GetShoppingCartById(shoppingCartId);
+
+            foreach (var item in shoppingCart.CartItems)
+            {
+                item.OrderPrice = shoppingCart.CartItems
+                    .Where(ci => ci.ProductId == item.ProductId)
+                    .Select(p => p.Product.Price).FirstOrDefault();
+            }
+            _unitOfWork.ShoppingCartRepository.Update(shoppingCart);
+            await _unitOfWork.SaveChangesAsync();
+
             OrderViewModel ovm = new()
             {
-                ShoppingCart = await _shoppingCartService.GetShoppingCartById(shoppingCartId),
+                ShoppingCart = shoppingCart,
                 Account = await _accountService.GetAccountById(accountId),
             };
             return ovm;

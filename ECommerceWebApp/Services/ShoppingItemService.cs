@@ -6,10 +6,12 @@ namespace ECommerceWebApp.Services
     public class ShoppingItemService
     {
         private readonly IUnitOfWork<ShoppingItem> _unitOfWorkShoppingItem;
+        private readonly ProductService _productService;
 
-        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem)
+        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem, ProductService productService)
         {
             _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
+            _productService = productService;
         }
 
         public async Task<ShoppingItem> AddShoppingItemToCart(Product product, ShoppingCart shoppingCart)
