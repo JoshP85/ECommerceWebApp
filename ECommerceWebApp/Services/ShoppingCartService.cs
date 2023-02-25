@@ -34,7 +34,7 @@ namespace ECommerceWebApp.Services
                 shoppingCart.CartItems.Add(shoppingItem);
             }
 
-            UpdateShoppingCartTotalPrice(shoppingCart, shoppingItemDTO.ProductPrice);
+            CalculateCartTotalPrice(shoppingCart);
 
             await _unitOfWorkShoppingCart.SaveChangesAsync();
 
@@ -57,16 +57,11 @@ namespace ECommerceWebApp.Services
             ShoppingCart shoppingCart =
                     await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
 
-            if (shoppingItemDTO.NewQuantity > shoppingItemDTO.CurrentQuantity)
-            {
-                decimal newprice = shoppingItemDTO.ProductPrice * (shoppingItemDTO.NewQuantity - shoppingItemDTO.CurrentQuantity);
-                UpdateShoppingCartTotalPrice(shoppingCart, newprice);
-            }
-            else if (shoppingItemDTO.NewQuantity < shoppingItemDTO.CurrentQuantity)
-            {
-                decimal newprice = shoppingItemDTO.ProductPrice * (shoppingItemDTO.CurrentQuantity - shoppingItemDTO.NewQuantity);
-                UpdateShoppingCartTotalPrice(shoppingCart, -newprice);
-            }
+            ShoppingItem shoppingItem = shoppingCart.CartItems.Where(ci => ci.ShoppingItemId == shoppingItemDTO.ShoppingItemId).FirstOrDefault();
+
+            shoppingItem.Quantity = shoppingItemDTO.NewQuantity;
+
+            CalculateCartTotalPrice(shoppingCart);
 
             _shoppingItemService.UpdateItemQuantityAndTotalPrice(await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId), shoppingItemDTO.NewQuantity);
 
@@ -76,6 +71,7 @@ namespace ECommerceWebApp.Services
 
             return true;
         }
+
         public async Task<bool> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
         {
             ShoppingCart shoppingCart =
@@ -86,16 +82,18 @@ namespace ECommerceWebApp.Services
 
             _shoppingItemService.DeleteShoppingItem(shoppingItem);
 
-            UpdateShoppingCartTotalPrice(shoppingCart, -shoppingItemDTO.ProductPrice * shoppingItem.Quantity);
+            shoppingCart.CartItems.Remove(shoppingItem);
+
+            CalculateCartTotalPrice(shoppingCart);
 
             await _unitOfWorkShoppingCart.SaveChangesAsync();
 
             return true;
         }
 
-        public void UpdateShoppingCartTotalPrice(ShoppingCart shoppingCart, decimal updatedPriceOfItem)
+        public void CalculateCartTotalPrice(ShoppingCart shoppingCart)
         {
-            shoppingCart.ShoppingCartTotalPrice += updatedPriceOfItem;
+            shoppingCart.ShoppingCartTotalPrice = shoppingCart.CartItems.Sum(ci => ci.Product.Price * ci.Quantity);
 
             _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
         }
