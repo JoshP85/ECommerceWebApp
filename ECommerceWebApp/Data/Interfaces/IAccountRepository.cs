@@ -7,5 +7,6 @@ namespace ECommerceWebApp.Data.Interfaces
         Task<Account> GetAccountByEmailAync(string email);
         Task<bool> IsEmailInUseAsync(string email);
         Task<bool> IsIdInUseAsync(string id);
+        Task<IEnumerable<Account>> GetAllAccountData(string accountId);
     }
 }

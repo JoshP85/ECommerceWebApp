@@ -27,5 +27,11 @@ namespace ECommerceWebApp.Data
         {
             return await _context.Accounts.AnyAsync(_account => _account.AccountId == id);
         }
+
+        public async Task<IEnumerable<Account>> GetAllAccountData(string accountId) =>
+            await _context.Accounts
+            .Where(a => a.AccountId == accountId)
+            /*            .Include(x => x.Address)*/
+            .Include(a => a.CompletedOrders).ThenInclude(o => o.OrderItems).ToListAsync();
     }
 }

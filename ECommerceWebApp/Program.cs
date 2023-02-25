@@ -23,6 +23,7 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ProductCategoryService>();
 builder.Services.AddScoped<ShoppingCartService>();
 builder.Services.AddScoped<ShoppingItemService>();
+builder.Services.AddScoped<OrderService>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 builder.Services.AddScoped<IShoppingItemRepository, ShoppingItemRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 
 

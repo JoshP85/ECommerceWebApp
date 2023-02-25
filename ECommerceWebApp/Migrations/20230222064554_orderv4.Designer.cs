@@ -2,6 +2,7 @@
 using ECommerceWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceWebApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230222064554_orderv4")]
+    partial class orderv4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,14 +57,15 @@ namespace ECommerceWebApp.Migrations
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Address", b =>
                 {
                     b.Property<string>("AddressId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountId")
                         .HasColumnType("text");
 
                     b.Property<string>("AddressLine1")
@@ -83,6 +87,9 @@ namespace ECommerceWebApp.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("AddressId");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("Addresses");
                 });
@@ -205,9 +212,6 @@ namespace ECommerceWebApp.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("OrderPrice")
-                        .HasColumnType("numeric");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("text");
 
@@ -231,19 +235,19 @@ namespace ECommerceWebApp.Migrations
                     b.ToTable("ShoppingItems");
                 });
 
-            modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
+            modelBuilder.Entity("ECommerceWebApp.Models.Address", b =>
                 {
-                    b.HasOne("ECommerceWebApp.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
+                    b.HasOne("ECommerceWebApp.Models.Account", "Account")
+                        .WithOne("Address")
+                        .HasForeignKey("ECommerceWebApp.Models.Address", "AccountId");
 
-                    b.Navigation("Address");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("ECommerceWebApp.Models.Order", b =>
                 {
                     b.HasOne("ECommerceWebApp.Models.Account", "Account")
-                        .WithMany("CompletedOrders")
+                        .WithMany("OrderHistory")
                         .HasForeignKey("AccountId");
 
                     b.HasOne("ECommerceWebApp.Models.Address", "ShippingAddress")
@@ -277,7 +281,7 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.ShoppingItem", b =>
                 {
-                    b.HasOne("ECommerceWebApp.Models.Order", "Order")
+                    b.HasOne("ECommerceWebApp.Models.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
@@ -289,8 +293,6 @@ namespace ECommerceWebApp.Migrations
                         .WithMany("CartItems")
                         .HasForeignKey("ShoppingCartId");
 
-                    b.Navigation("Order");
-
                     b.Navigation("Product");
 
                     b.Navigation("ShoppingCart");
@@ -298,7 +300,9 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.Account", b =>
                 {
-                    b.Navigation("CompletedOrders");
+                    b.Navigation("Address");
+
+                    b.Navigation("OrderHistory");
 
                     b.Navigation("ShoppingCart");
                 });

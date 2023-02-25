@@ -7,17 +7,21 @@ namespace ECommerceWebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private string AccountId => HttpContext.Session.GetString(nameof(Account.AccountId));
+
         private readonly ILogger<HomeController> _logger;
         private readonly AccountService _accountService;
         private readonly AuthService _authService;
         private readonly ShoppingCartService _shoppingCartService;
+        private readonly OrderService _orderService;
 
-        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService, ShoppingCartService shoppingCartService)
+        public AccountController(ILogger<HomeController> logger, AccountService accountService, AuthService authService, ShoppingCartService shoppingCartService, OrderService orderService)
         {
             _logger = logger;
             _accountService = accountService;
             _authService = authService;
             _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
         }
 
         public IActionResult Register()
@@ -55,6 +59,17 @@ namespace ECommerceWebApp.Controllers
             }
 
             return View(newAccount);
+        }
+
+        public async Task<ActionResult> AccountDetails()
+        {
+            AccountDetailsViewModel advm = new()
+            {
+                Account = await _accountService.GetAllAccountData(AccountId),
+                OrderHistory = await _orderService.GetAllByAccountId(AccountId),
+            };
+            return View(advm);
+            
         }
     }
 }

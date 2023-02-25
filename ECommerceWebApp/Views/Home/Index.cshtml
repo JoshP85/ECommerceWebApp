@@ -16,6 +16,7 @@
                 <th>@category.Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Quantity</th>
             </tr>
             var products = category.Products.OrderBy(p => p.Name).ToList();
             @foreach (var product in products)
@@ -24,34 +25,36 @@
                     <td>@product.Name</td>
                     <td>@product.Description</td>
                     <td>@product.Price</td>
+                    <td>@product.Quantity</td>
 
                     @if (product.Quantity <= 0)
                     {
                         <td>Sold out</td>
                     }
-                    @if(Model.CartItems != null)
+                    else
                     {
-                        @if (Model.CartItems.Contains(product.ProductId))
+                        @if (Model.CartItems != null)
                         {
-
-                            <td>
-                                <form method="post" asp-controller="ShoppingCart" asp-action="ShoppingCart">
-                                    <input type="submit" value="In Cart" />
-                                </form>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
-                                    <input type="hidden" name="ProductId" value="@product.ProductId" />
-                                    <input type="hidden" name="ProductPrice" value="@product.Price" />
-                                    <input type="submit" value="Add to Cart" />
-                                </form>
-                            </td>
+                            @if (Model.CartItems.Contains(product.ProductId))
+                            {
+                                <td>
+                                    <form method="post" asp-controller="ShoppingCart" asp-action="ShoppingCart">
+                                        <input type="submit" value="In Cart" />
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
+                                        <input type="hidden" name="ProductId" value="@product.ProductId" />
+                                        <input type="hidden" name="ProductPrice" value="@product.Price" />
+                                        <input type="submit" value="Add to Cart" />
+                                    </form>
+                                </td>
+                            }
                         }
                     }
-
                 </tr>
             }
         }

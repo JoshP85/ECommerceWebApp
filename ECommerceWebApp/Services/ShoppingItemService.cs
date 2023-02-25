@@ -6,10 +6,12 @@ namespace ECommerceWebApp.Services
     public class ShoppingItemService
     {
         private readonly IUnitOfWork<ShoppingItem> _unitOfWorkShoppingItem;
+        private readonly ProductService _productService;
 
-        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem)
+        public ShoppingItemService(IUnitOfWork<ShoppingItem> unitOfWorkshoppingItem, ProductService productService)
         {
             _unitOfWorkShoppingItem = unitOfWorkshoppingItem;
+            _productService = productService;
         }
 
         public async Task<ShoppingItem> AddShoppingItemToCart(Product product, ShoppingCart shoppingCart)
@@ -66,6 +68,19 @@ namespace ECommerceWebApp.Services
         public async Task<decimal> getTotalCostOfCartitems(string shoppingCartId)
         {
             return await _unitOfWorkShoppingItem.ShoppingItemRepository.GetTotalCostOfCartItems(shoppingCartId);
+        }
+
+        public void ConvertShoppingItemToOrder(Order order)
+        {
+            foreach (var shoppingItem in order.OrderItems)
+            {
+                shoppingItem.Order = order;
+                shoppingItem.OrderId = order.OrderId;
+                shoppingItem.ShoppingCartId = null;
+                shoppingItem.ShoppingCart = null;
+
+                _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
+            }
         }
     }
 }

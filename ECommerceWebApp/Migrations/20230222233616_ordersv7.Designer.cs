@@ -2,6 +2,7 @@
 using ECommerceWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceWebApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230222233616_ordersv7")]
+    partial class ordersv7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,9 +208,6 @@ namespace ECommerceWebApp.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("OrderPrice")
-                        .HasColumnType("numeric");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("text");
 
@@ -277,7 +277,7 @@ namespace ECommerceWebApp.Migrations
 
             modelBuilder.Entity("ECommerceWebApp.Models.ShoppingItem", b =>
                 {
-                    b.HasOne("ECommerceWebApp.Models.Order", "Order")
+                    b.HasOne("ECommerceWebApp.Models.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
@@ -288,8 +288,6 @@ namespace ECommerceWebApp.Migrations
                     b.HasOne("ECommerceWebApp.Models.ShoppingCart", "ShoppingCart")
                         .WithMany("CartItems")
                         .HasForeignKey("ShoppingCartId");
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
 

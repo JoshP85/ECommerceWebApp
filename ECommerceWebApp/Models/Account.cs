@@ -41,8 +41,10 @@ namespace ECommerceWebApp.Models
         [StringLength(20)]
         [Column(TypeName = "text")]
         public string Phone { get; set; }
-        public string Address { get; set; }
+        public string AddressId { get; set; }
+        public virtual Address Address { get; set; }
         public string ShoppingCartId { get; set; }
         public virtual ShoppingCart ShoppingCart { get; set; }
+        public virtual ICollection<Order> CompletedOrders { get; set; }
     }
 }

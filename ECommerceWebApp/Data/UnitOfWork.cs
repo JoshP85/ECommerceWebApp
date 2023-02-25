@@ -12,11 +12,12 @@ namespace ECommerceWebApp.Data
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IShoppingItemRepository _shoppingItemRepository;
+        private readonly IOrderRepository _orderRepository;
 
         public UnitOfWork(DatabaseContext context, IRepository<T> repository,
             IAccountRepository accountRepository, IAuthRepository authRepository,
             IProductRepository productRepository, IProductCategoryRepository productCategoryRepository,
-            IShoppingCartRepository shoppingCartRepository, IShoppingItemRepository shoppingItemRepository)
+            IShoppingCartRepository shoppingCartRepository, IShoppingItemRepository shoppingItemRepository, IOrderRepository orderRepository)
         {
             _context = context;
             _repository = repository;
@@ -26,6 +27,7 @@ namespace ECommerceWebApp.Data
             _productCategoryRepository = productCategoryRepository;
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingItemRepository = shoppingItemRepository;
+            _orderRepository = orderRepository;
         }
 
         public IRepository<T> Repository => _repository;
@@ -35,6 +37,7 @@ namespace ECommerceWebApp.Data
         public IProductCategoryRepository ProductCategoryRepository => _productCategoryRepository;
         public IShoppingCartRepository ShoppingCartRepository => _shoppingCartRepository;
         public IShoppingItemRepository ShoppingItemRepository => _shoppingItemRepository;
+        public IOrderRepository OrderRepository => _orderRepository;
 
 
 

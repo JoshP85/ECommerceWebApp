@@ -7,10 +7,17 @@ namespace ECommerceWebApp.Services
     public class AccountService
     {
         private readonly IUnitOfWork<Account> _unitOfWork;
+        private readonly IUnitOfWork<Order> _unitOfWorkOrder;
 
-        public AccountService(IUnitOfWork<Account> unitOfWork)
+        public AccountService(IUnitOfWork<Account> unitOfWork, IUnitOfWork<Order> unitOfWorkOrder)
         {
             _unitOfWork = unitOfWork;
+            _unitOfWorkOrder = unitOfWorkOrder;
+        }
+
+        public async Task<Account> GetAccountById(string accountId)
+        {
+            return await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
         }
 
         public async Task<Account> CreateAccount(RegisterViewModel newAccount)
@@ -44,6 +51,20 @@ namespace ECommerceWebApp.Services
             return await _unitOfWork.AccountRepository.IsEmailInUseAsync(email);
         }
 
+        public async Task UpdateOrderHistory(Order order)
+        {
+            if (order.Account.CompletedOrders == null)
+            {
+                order.Account.CompletedOrders = new List<Order>();
+            }
+
+            order.Account.CompletedOrders.Add(order);
+
+            await _unitOfWorkOrder.OrderRepository.AddAsync(order);
+
+            _unitOfWork.AccountRepository.Update(order.Account);
+        }
+
         public async Task AddShoppingCartIdToAccount(string Id, string shoppingCartId)
         {
             Account account = await _unitOfWork.AccountRepository.GetByIdAsync(Id);
@@ -51,6 +72,11 @@ namespace ECommerceWebApp.Services
 
             _unitOfWork.AccountRepository.Update(account);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Account> GetAllAccountData(string accountId)
+        {
+            return await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
         }
     }
 }
