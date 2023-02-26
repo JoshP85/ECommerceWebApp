@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<ProductCategory>*@
-@model ECommerceWebApp.ViewModels.IndexViewModel
+﻿@model ECommerceWebApp.ViewModels.IndexViewModel
 
 @{
     ViewData["Title"] = "View";
@@ -8,6 +7,7 @@
 <h1>GameShop</h1>
 
 <div>
+    @Html.ValidationMessage("PageError", new {@class = "text-danger"})
     <hr />
     <table>
         @foreach (var category in Model.Categories)
@@ -46,9 +46,10 @@
                             else
                             {
                                 <td>
-                                    <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart">
+                                    <form method="post" asp-controller="ShoppingCart" asp-action="UpdateCart">
                                         <input type="hidden" name="ProductId" value="@product.ProductId" />
                                         <input type="hidden" name="ProductPrice" value="@product.Price" />
+                                        <input type="hidden" name="Action" value="Addx" />
                                         <input type="submit" value="Add to Cart" />
                                     </form>
                                 </td>

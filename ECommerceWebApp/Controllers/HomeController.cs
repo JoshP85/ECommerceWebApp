@@ -23,6 +23,8 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+
             if (ShoppingCartId != null)
             {
                 ShoppingCart shoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId);
@@ -43,10 +45,17 @@ namespace ECommerceWebApp.Controllers
                     CartItems = cartItems,
                 };
 
-
+                var errorMessages = TempData["PageError"] as List<string>;
+                if (errorMessages != null)
+                {
+                    foreach (var errorMessage in errorMessages)
+                    {
+                        ModelState.AddModelError("PageError", errorMessage);
+                    }
+                }
                 return View(indexVM);
             }
-
+            //TODO: Enable adding to cart when user is not logged in.
             IndexViewModel indexVMNUll = new()
             {
                 Categories = _productCategoryService.GetAllCategoriesWithProducts(),

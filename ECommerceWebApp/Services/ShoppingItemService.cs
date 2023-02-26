@@ -14,20 +14,13 @@ namespace ECommerceWebApp.Services
             _productService = productService;
         }
 
-        public async Task<ShoppingItem> AddShoppingItemToCart(Product product, ShoppingCart shoppingCart)
+        public async Task<ShoppingItem> CreateShoppingItem(Product product, ShoppingCart shoppingCart)
         {
-            ShoppingItem shoppingItem =
-                GetItemFromCartByProductId(product.ProductId, shoppingCart);
+            ShoppingItem newShoppingItem = new(shoppingCart, product);
 
-            if (shoppingItem != null)
-            {
-                UpdateItemQuantityAndTotalPrice(shoppingItem, Quantity: 1);
-                return null;
-            }
-            else
-            {
-                return await CreateShoppingItem(product, shoppingCart);
-            }
+            await _unitOfWorkShoppingItem.ShoppingItemRepository.AddAsync(newShoppingItem);
+
+            return newShoppingItem;
         }
 
         public void UpdateItemQuantityAndTotalPrice(ShoppingItem shoppingItem, int Quantity)
@@ -37,15 +30,6 @@ namespace ECommerceWebApp.Services
             shoppingItem.ShoppingItemTotalPrice = shoppingItem.Product.Price * shoppingItem.Quantity;
 
             _unitOfWorkShoppingItem.ShoppingItemRepository.Update(shoppingItem);
-        }
-
-        public async Task<ShoppingItem> CreateShoppingItem(Product product, ShoppingCart shoppingCart)
-        {
-            ShoppingItem newShoppingItem = new(shoppingCart, product);
-
-            await _unitOfWorkShoppingItem.ShoppingItemRepository.AddAsync(newShoppingItem);
-
-            return newShoppingItem;
         }
 
         public ShoppingItem GetItemFromCartByProductId(string productId, ShoppingCart shoppingCart)

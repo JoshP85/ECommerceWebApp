@@ -3,6 +3,7 @@ using ECommerceWebApp.Models;
 using ECommerceWebApp.Services;
 using ECommerceWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using static ECommerceWebApp.ViewModels.ShoppingItemViewModel;
 
 namespace ECommerceWebApp.Controllers
 {
@@ -38,74 +39,51 @@ namespace ECommerceWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToCart(ShoppingItemDTO shoppingItem)
+        public async Task<IActionResult> UpdateCart(ShoppingItemViewModel shoppingItem)
         {
             if (ModelState.IsValid)
             {
-                shoppingItem.ShoppingCartId = ShoppingCartId;
-
-                var result = await _shoppingCartService.AddToCart(shoppingItem);
-
-                //TODO: Add error messages
-                if (result is true)
+                ShoppingItemDTO shoppingItemDto = new()
                 {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
+                    ShoppingItemId = shoppingItem.ShoppingItemId,
+                    ShoppingCartId = ShoppingCartId,
+                    ProductId = shoppingItem.ProductId,
+                    Quantity = shoppingItem.Quantity,
+                };
+
+                switch (shoppingItem.Action)
                 {
+                    case ActionType.Add:
+                        await _shoppingCartService.AddToCart(shoppingItemDto);
+                        return RedirectToAction("Index", "Home");
 
-                    return RedirectToAction("Index", "Home");
+                    case ActionType.Update:
+                        await _shoppingCartService.UpdateCartItem(shoppingItemDto);
+                        return RedirectToAction("ShoppingCart", "ShoppingCart");
+
+                    case ActionType.Remove:
+                        await _shoppingCartService.RemoveFromCart(shoppingItemDto);
+                        return RedirectToAction("ShoppingCart", "ShoppingCart");
+
+                    default:
+                        ModelState.AddModelError("PageError", "Unexpected error. Please try again.");
+
+                        TempData["PageError"] = ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList();
+                        return RedirectToAction("Index", "Home");
                 }
-
             }
+
+            ModelState.AddModelError("PageError", "Unexpected error. Please try again.");
+
+            TempData["PageError"] = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
             return RedirectToAction("Index", "Home");
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromCart(ShoppingItemDTO shoppingItemDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _shoppingCartService.RemoveFromCart(shoppingItemDTO);
-
-                //TODO: Add error messages
-                if (result is true)
-                {
-                    return RedirectToAction("ShoppingCart", "ShoppingCart");
-                }
-                else
-                {
-
-                    return RedirectToAction("ShoppingCart", "ShoppingCart");
-                }
-            }
-
-            return RedirectToAction("ShoppingCart", "ShoppingCart");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateCartItem(ShoppingItemDTO shoppingItemDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _shoppingCartService.UpdateCartItem(shoppingItemDTO);
-
-                //TODO: Add error messages
-                if (result is true)
-                {
-                    return RedirectToAction("ShoppingCart", "ShoppingCart");
-                }
-                else
-                {
-
-                    return RedirectToAction("ShoppingCart", "ShoppingCart");
-                }
-            }
-            return RedirectToAction("ShoppingCart", "ShoppingCart");
-        }
-
     }
 }
 

@@ -17,18 +17,20 @@ namespace ECommerceWebApp.Services
             _shoppingItemService = shoppingItemService;
         }
 
-        public async Task<bool> AddToCart(ShoppingItemDTO shoppingItemDTO)
+        public async Task<bool> AddToCart(ShoppingItemDTO shoppingItemDto)
         {
-            ShoppingCart shoppingCart = await GetShoppingCartById(shoppingItemDTO.ShoppingCartId);
+            ShoppingCart shoppingCart = await GetShoppingCartById(shoppingItemDto.ShoppingCartId);
+
             if (shoppingCart == null)
             {
                 return false;
             }
 
             Product product =
-                await _productService.GetProductByIdAsync(shoppingItemDTO.ProductId);
+                await _productService.GetProductByIdAsync(shoppingItemDto.ProductId);
 
-            ShoppingItem shoppingItem = await _shoppingItemService.AddShoppingItemToCart(product, shoppingCart);
+            ShoppingItem shoppingItem = await _shoppingItemService.CreateShoppingItem(product, shoppingCart);
+
             if (shoppingItem != null)
             {
                 shoppingCart.CartItems.Add(shoppingItem);
@@ -43,14 +45,9 @@ namespace ECommerceWebApp.Services
 
         public async Task<bool> UpdateCartItem(ShoppingItemDTO shoppingItemDTO)
         {
-            if (shoppingItemDTO.NewQuantity == 0)
+            if (shoppingItemDTO.Quantity == 0)
             {
                 await RemoveFromCart(shoppingItemDTO);
-                return true;
-            }
-
-            if (shoppingItemDTO.NewQuantity == shoppingItemDTO.CurrentQuantity)
-            {
                 return true;
             }
 
@@ -59,11 +56,11 @@ namespace ECommerceWebApp.Services
 
             ShoppingItem shoppingItem = shoppingCart.CartItems.Where(ci => ci.ShoppingItemId == shoppingItemDTO.ShoppingItemId).FirstOrDefault();
 
-            shoppingItem.Quantity = shoppingItemDTO.NewQuantity;
+            shoppingItem.Quantity = shoppingItemDTO.Quantity;
 
             CalculateCartTotalPrice(shoppingCart);
 
-            _shoppingItemService.UpdateItemQuantityAndTotalPrice(await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId), shoppingItemDTO.NewQuantity);
+            _shoppingItemService.UpdateItemQuantityAndTotalPrice(await _shoppingItemService.GetShoppingItemById(shoppingItemDTO.ShoppingItemId), shoppingItemDTO.Quantity);
 
             _unitOfWorkShoppingCart.ShoppingCartRepository.Update(shoppingCart);
 
