@@ -34,6 +34,12 @@ namespace ECommerceWebApp.Controllers
                 ShoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId),
             };
 
+            string errorMessage = TempData["PageError"] as string;
+            if (errorMessage != null)
+            {
+                ModelState.AddModelError("PageError", errorMessage);
+            }
+
             return View(scvm);
         }
 
@@ -66,23 +72,20 @@ namespace ECommerceWebApp.Controllers
                         return RedirectToAction("ShoppingCart", "ShoppingCart");
 
                     default:
-                        ModelState.AddModelError("PageError", "Unexpected error. Please try again.");
-
-                        TempData["PageError"] = ModelState.Values
-                            .SelectMany(v => v.Errors)
-                            .Select(e => e.ErrorMessage)
-                            .ToList();
+                        TempData["PageError"] = "Unexpected error. Please try again.";
                         return RedirectToAction("Index", "Home");
                 }
             }
+            TempData["PageError"] = "Unexpected error. Please try again.";
 
-            ModelState.AddModelError("PageError", "Unexpected error. Please try again.");
-
-            TempData["PageError"] = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
-            return RedirectToAction("Index", "Home");
+            if (shoppingItem.Page == "Cart")
+            {
+                return RedirectToAction("ShoppingCart", "ShoppingCart");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

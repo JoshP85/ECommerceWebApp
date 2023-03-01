@@ -17,5 +17,6 @@ namespace ECommerceWebApp.ViewModels
         public int Quantity { get; set; }
         [ValidAction(ActionType.Add, ActionType.Update, ActionType.Remove)]
         public ActionType Action { get; set; }
+        public string Page { get; set; }// Used for displaying error message in the correct view.
     }
 }

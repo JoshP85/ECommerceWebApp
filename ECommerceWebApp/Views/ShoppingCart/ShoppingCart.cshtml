@@ -33,7 +33,7 @@
         </dd>
     </dl>
     <hr />
-
+    @Html.ValidationMessage("PageError", new {@class = "text-danger"})
     <table>
         <tr>
             <th>productId</th>
@@ -55,6 +55,7 @@
                 <td>
                     <input type="number" min="0" max="@shoppingItem.Product.Quantity" name="Quantity" value="@shoppingItem.Quantity" style="max-width:3em" />
                     <input type="hidden" name="Action" value="Update" />
+                    <input type="hidden" name="Page" value="Cart" />
                     <input type="submit" value="Update" />
                 </td>
                 </form>
@@ -68,6 +69,7 @@
                         <input type="hidden" name="ProductPrice" value="@shoppingItem.Product.Price" />
                         <input type="hidden" name="Quantity" value="0" />
                         <input type="hidden" name="Action" value="Remove" />
+                        <input type="hidden" name="Page" value="Cart" />
                         <input type="submit" value="Remove" />
                     </form>
                 </td>

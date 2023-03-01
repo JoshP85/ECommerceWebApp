@@ -23,8 +23,6 @@ namespace ECommerceWebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-
             if (ShoppingCartId != null)
             {
                 ShoppingCart shoppingCart = await _shoppingCartService.GetShoppingCartById(ShoppingCartId);
@@ -45,13 +43,10 @@ namespace ECommerceWebApp.Controllers
                     CartItems = cartItems,
                 };
 
-                var errorMessages = TempData["PageError"] as List<string>;
-                if (errorMessages != null)
+                string errorMessage = TempData["PageError"] as string;
+                if (errorMessage != null)
                 {
-                    foreach (var errorMessage in errorMessages)
-                    {
-                        ModelState.AddModelError("PageError", errorMessage);
-                    }
+                    ModelState.AddModelError("PageError", errorMessage);
                 }
                 return View(indexVM);
             }
